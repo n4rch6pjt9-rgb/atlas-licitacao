@@ -1,0 +1,276 @@
+{
+  "result": [
+    {
+      "codigoLicitacao": 507402,
+      "numeroLicitacao": null,
+      "identificacao": "644/2026",
+      "numero": "15/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA ESPECIALIZADA EM PRESTAÇÃO DE SERVIÇOS DE REGULARIZAÇÃO FUNDIÁRIA COM A FINALIDADE DE IMPLEMENTAR AS MEDIDAS TÉCNICAS, ADMINISTRATIVAS E JURÍDICAS NECESSÁRIAS À REGULARIZAÇÃO DA POSSE DOS IMÓVEIS EM FAVOR DOS MORADORES DO NÚCLEO...",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 22,
+        "siglaTipoLicitacao": "CPTP",
+        "tipoLicitacao": "Concorrência por Técnica e Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Técnica e Preço"
+      },
+      "codigoSituacaoEdital": 5,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-10-28T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-09-02T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-10-28T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-08-28T14:09:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cptp-15-2026-2026-507402",
+      "statusProcessoPublico": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 507564,
+      "numeroLicitacao": null,
+      "identificacao": "720/2026",
+      "numero": "025/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA ESPECIALIZADA CAPACITADA PARA A ELABORAÇÃO DE PROJETOS BÁSICOS E EXECUTIVOS, ABRANGENDO A ELABORAÇÃO DE PEÇAS TÉCNICAS E GRÁFICAS, LEVANTAMENTOS, SONDAGENS, ORÇAMENTOS E ESTUDOS DIVERSOS, E APROVAÇÃO DOS PROJETOS NO ÓRGÃO...",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 22,
+        "siglaTipoLicitacao": "CPTP",
+        "tipoLicitacao": "Concorrência por Técnica e Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Técnica e Preço"
+      },
+      "codigoSituacaoEdital": 5,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-10-27T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-09-02T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-10-27T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-08-28T15:03:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cptp-025-2026-2026-507564",
+      "statusProcessoPublico": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 488280,
+      "numeroLicitacao": null,
+      "identificacao": "643/2026",
+      "numero": "014-2/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA PARA PRESTAÇÃO DOS SERVIÇOS DE MANEJO DOS RESÍDUOS SÓLIDOS URBANOS E LIMPEZA URBANA, SOB O REGIME DE EXECUÇÃO INDIRETA MEDIANTE EMPREITADA POR PREÇO UNITÁRIO.",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 28,
+        "siglaTipoLicitacao": "CPMP",
+        "tipoLicitacao": "Concorrência por Menor Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Menor Preço"
+      },
+      "codigoSituacaoEdital": 5,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-09-29T13:01:00Z",
+      "dataHoraInicioPropostas": "2026-09-14T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-09-29T13:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-09-11T20:18:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cpmp-014-2-2026-2026-488280",
+      "statusProcessoPublico": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 510906,
+      "numeroLicitacao": null,
+      "identificacao": "3530607.422.00044751/2026-59",
+      "numero": "30/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA ESPECIALIZADA EM ENGENHARIA PARA O FORNECIMENTO, INSTALAÇÃO, GESTÃO, MANUTENÇÃO E PRESTAÇÃO DE SERVIÇOS ASSOCIADOS, VISANDO A MODERNIZAÇÃO DO PARQUE DE ILUMINAÇÃO PÚBLICA (IP) E A IMPLANTAÇÃO DE INFRAESTRUTURA PARA SMART CITIES",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 28,
+        "siglaTipoLicitacao": "CPMP",
+        "tipoLicitacao": "Concorrência por Menor Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Menor Preço"
+      },
+      "codigoSituacaoEdital": 5,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-09-29T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-09-14T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-09-29T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-09-11T20:04:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cpmp-30-2026-2026-510906",
+      "statusProcessoPublico": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 499847,
+      "numeroLicitacao": null,
+      "identificacao": "3530607.422.00007938/2026-7",
+      "numero": "16/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA OU ENTIDADE ESPECIALIZADA PARA A EXECUÇÃO DE ATIVIDADES COMPLEMENTARES (OFICINAS ARTÍSTICAS, ESPORTIVAS E DE LINGUAGENS, CIÊNCIAS E TECNOLOGIAS), NO ÂMBITO DO PROGRAMA ESCOLA DE TEMPO INTEGRAL DA SECRETARIA MUNICIPAL DE EDUCAÇÃO...",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 22,
+        "siglaTipoLicitacao": "CPTP",
+        "tipoLicitacao": "Concorrência por Técnica e Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Técnica e Preço"
+      },
+      "codigoSituacaoEdital": 5,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-09-24T13:01:00Z",
+      "dataHoraInicioPropostas": "2026-07-31T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-09-24T13:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-07-30T13:49:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cptp-16-2026-2026-499847",
+      "statusProcessoPublico": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    }
+  ],
+  "offset": 1,
+  "limit": 5,
+  "total": 491,
+  "pageCount": 99,
+  "currentPage": 1,
+  "nextPage": 2,
+  "previousPage": null
+}

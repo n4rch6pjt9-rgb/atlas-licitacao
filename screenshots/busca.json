@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8080/busca",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Atlas",
+      "hasCanvas": false,
+      "bodyTextLen": 10337,
+      "bodyTextHash": "8a3f11f53bcfdebf46bd745745fd94741364aa6395e5d676a78897de8bb7810a",
+      "bodyTextPrefix": "Atlas Registry de portais Visão geral Cobertura Busca Censo Font",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/busca.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Atlas",
+      "hasCanvas": false,
+      "bodyTextLen": 10204,
+      "bodyTextHash": "6738366bd44e51bb95ddb7d038fd0f5239a0162fdf9cb8f93f061aea23a1c63c",
+      "bodyTextPrefix": "Atlas Registry de portais Busca unificada Uma contratação, vária",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/busca-mobile.png"
+    }
+  },
+  "brandWarnings": [
+    "BRAND NOTE: no custom public/og.jpg — the platform will serve the og.grok.me placeholder. Custom cards are the default for games of every kind (DOM board/word games included), whimsical apps, creative tools, and brand-forward pages — only plain utilities (converters, CRUD trackers, admin dashboards) keep the placeholder. If this app is not a plain utility, finish the brand-asset pass per /workspace/.grok/skills/og/SKILL.md."
+  ],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/busca.json"
+}

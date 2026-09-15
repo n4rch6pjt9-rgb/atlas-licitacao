@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8080/planejamento",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Atlas",
+      "hasCanvas": false,
+      "bodyTextLen": 1101,
+      "bodyTextHash": "709cd0e2acccb53a1b6e874955cdb58dc972c96eeb4eebb01ff186be15b62f89",
+      "bodyTextPrefix": "Atlas Registry de portais Visão geral Oportunidades Planejamento",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/planejamento.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Atlas",
+      "hasCanvas": false,
+      "bodyTextLen": 908,
+      "bodyTextHash": "5d567434ef2c2933edcaeb5fba99331ed3283b25b3177cb7aa374f44dee285a6",
+      "bodyTextPrefix": "Atlas Registry de portais Demanda futura PCA e PGC são planejame",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/planejamento-mobile.png"
+    }
+  },
+  "brandWarnings": [
+    "BRAND NOTE: no custom public/og.jpg — the platform will serve the og.grok.me placeholder. Custom cards are the default for games of every kind (DOM board/word games included), whimsical apps, creative tools, and brand-forward pages — only plain utilities (converters, CRUD trackers, admin dashboards) keep the placeholder. If this app is not a plain utility, finish the brand-asset pass per /workspace/.grok/skills/og/SKILL.md."
+  ],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/planejamento.json"
+}

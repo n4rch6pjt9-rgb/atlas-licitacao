@@ -1,0 +1,30 @@
+{
+  "conteudo": [
+    {
+      "id": 91001,
+      "processo": "12/2026",
+      "tipo": "PREGAO",
+      "orgaoSigla": "SEA",
+      "orgaoNome": "Secretaria de Estado da Administração",
+      "objeto": "Aquisição de material de expediente para unidades da SEA",
+      "entregaProposta": "2026-09-20T17:00:00.000Z",
+      "abertura": "2026-09-21T10:00:00.000Z",
+      "situacao": "PUBLICADO"
+    },
+    {
+      "id": 91002,
+      "processo": "13/2026",
+      "tipo": "DISPENSA",
+      "orgaoSigla": "SES",
+      "orgaoNome": "Secretaria de Estado da Saúde",
+      "objeto": "Contratação emergencial de serviços de manutenção predial",
+      "entregaProposta": "2026-09-18T17:00:00.000Z",
+      "abertura": "2026-09-19T09:00:00.000Z",
+      "situacao": "PUBLICADO"
+    }
+  ],
+  "pagina": 1,
+  "porPagina": 20,
+  "totalPaginas": 1,
+  "totalElementos": 2
+}

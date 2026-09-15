@@ -1,0 +1,1526 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Estilo do popup */
+        .init-notif-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: whitesmoke; /* Azul Escuro */
+            color: dimgray; /* Branco */
+            padding: 1.5px 2px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            display: none; /* Começa oculto */
+            max-width: 40vw;
+            font-family: Arial, sans-serif;
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
+
+        /* Botão de fechar */
+        .init-notif-popup-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white; /* Branco */
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Botão "Não me lembre" */
+        .init-notif-popup-dont-remind-btn {
+            background: #f2f2f2; /* Cinza Claro */
+            color: dimgray; /* Azul Escuro */
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+        }
+
+            .init-notif-popup-dont-remind-btn:hover {
+                background: #e0e0e0; /* Cinza um pouco mais escuro */
+            }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        // Fallback to loading jQuery from a local path if the CDN is unavailable
+        (window.jQuery || document.write('<script src="/Scripts/jquery-3.2.1.min.js"><\/script>'));
+    </script>
+    <meta charset="ISO-8859-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de COMPRA DIRETA - BLLCOMPRAS</title>
+    <link href="/Content/BLLCOMPRAS/css?v=aZhKlfSDRqK9Qztg8pWTLzJxwFCFF-lin2O4saAYAVc1" rel="stylesheet"/>
+
+    <link rel="shortcut icon" href="/Content/BLLCOMPRAS/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/Content/BLLCOMPRAS/favicon.ico" type="image/x-icon">
+</head>
+<body style="overflow-x:hidden" lang="pt-br">
+    <div>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div style="background-color: white">
+                <a class="navbar-brand" href="/">
+                    <img src="/Content/BLLCOMPRAS/logo.png" />
+                </a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01" style="padding-left: 10px">
+                    <ul class="navbar-nav mr-auto">
+                        
+
+<a class="nav-link" href="/Process/ProcessSearchPublic?param1=0">Processos</a>
+<a class="nav-link" href="/DirectBuy/DirectBuySearchPublic">Compra Direta</a>
+<a class="nav-link" href="/Process/ProcessSearchPublicByLocation">Busca por Localiza&#231;&#227;o</a>
+                    </ul>
+                            </div>
+        </nav>
+        <nav class="navbar fixed-bottom navbar-expand-sm navbar-light bg-footer">
+            <div class="collapse navbar-collapse" id="navbarColor01" style="font-family: Calibri">
+                <ul class="navbar-nav mr-auto"></ul>
+                <text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                <text style="color: white"></text><span id="footResultCount" style="color: white"></span><text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                <span id="dateNowSpan" style="color: white">2026</span><text style="color: white">&nbsp; - &copy; BLLCOMPRAS</text>
+            </div>
+        </nav>
+    </div>
+    <div>
+        <div>
+    <div class="modal fade" id="errorModal" role="dialog" style="z-index:9000" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-danger mb-3" style="max-width: 20rem;" id="errorContentModal">
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="warningModal" role="dialog" style="z-index:8000" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-warning mb-3" style="max-width: 20rem;" id="warningContentModal">
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="infoModal" role="dialog" style="z-index:8000" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-info mb-3" style="max-width: 20rem;" id="infoContentModal">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uplModal" role="dialog" style="z-index:7000" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width:auto;height:auto;text-align: center;">
+            <div class="modal-content modal-primary" id="uplContentModal">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loadingModal" role="dialog" data-backdrop="static" style="z-index:9999">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width:300px;height:auto;text-align: center;vertical-align: middle;">
+            <div class="modal-content modal-primary" id="loadingContentModal">
+                <div class="modal-header">
+                    <h6 class="modal-title">Carregando</h6>
+                </div>
+                <div class="modal-body" style="text-align:center">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalContent" style="z-index:6000">
+
+    </div>
+</div>
+
+        
+        <div style="margin:1.2% 1% 0% 1%;">
+            
+
+
+<div id="captcha" class="g-recaptcha" data-theme="dark" style="position:relative;z-index:9999" data-badge="bottomleft" data-sitekey="6LdpKvsmAAAAAA4rzH5iQNswgItyulQ1J2HQ1FkK" data-size="invisible" hidden></div>
+<script src='https://www.google.com/recaptcha/api.js?onload=recaptchaReadycallback&render=explicit' async defer'></script>
+
+<script>
+    $(function () {
+        setTimeout(function () {
+            var onclick = "$('#captcha').hide()"
+            var button = '<a style="right:0;top:0;position:absolute" href="#" onclick="' + onclick + '" class="btnCaptcha">x</a>'
+            $('.grecaptcha-logo').prepend(button);
+        }, 1000);
+    });
+</script>
+
+<style>
+    .btnCaptcha {
+        -moz-box-shadow: inset 0px 1px 0px 0px #cf866c;
+        -webkit-box-shadow: inset 0px 1px 0px 0px #cf866c;
+        box-shadow: inset 0px 1px 0px 0px #cf866c;
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #d0451b), color-stop(1, #bc3315));
+        background: -moz-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+        background: -webkit-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+        background: -o-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+        background: -ms-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+        background: linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d0451b', endColorstr='#bc3315',GradientType=0);
+        background-color: #d0451b;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        border: 1px solid #942911;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 8px;
+        font-weight: bold;
+        padding: 1px 5px;
+        text-decoration: none;
+        text-shadow: 0px 1px 0px #854629;
+    }
+</style>
+            
+
+<table class="table table-background" id="directBuyTable" onKeyPress="PressEnter(event, 'btnDirectBuySearch');">
+    <tr>
+        <td>
+            <table class="table table-form">
+                <tr>
+                    <th>
+                        <label class="col-form-label col-form-label-sm">PROMOTOR</label>
+                        <input class="form-control form-control-sm" id="Organization" name="Organization" type="text" value="" />
+                    </th>
+                    <th>
+                        <label class="col-form-label col-form-label-sm">N&#186; EDITAL</label>
+                        <input class="form-control form-control-sm" id="Number" name="Number" type="text" value="" />
+                    </th>
+                    <th>
+                        <label class="col-form-label col-form-label-sm">CIDADE</label>
+                        <input class="form-control form-control-sm" id="City" name="City" type="text" value="" />
+                    </th>
+                    <th>
+                        <label class="col-form-label col-form-label-sm">ESTADO</label>
+                        <select class="form-control form-control-sm" data-val="true" data-val-number="The field ESTADO must be a number." data-val-required="The ESTADO field is required." id="fkState" name="fkState"><option value=""></option>
+<option value="1">AC</option>
+<option value="2">AL</option>
+<option value="4">AM</option>
+<option value="3">AP</option>
+<option value="5">BA</option>
+<option value="6">CE</option>
+<option value="7">DF</option>
+<option value="8">ES</option>
+<option value="9">GO</option>
+<option value="10">MA</option>
+<option value="27">MG</option>
+<option value="12">MS</option>
+<option value="11">MT</option>
+<option value="13">PA</option>
+<option value="14">PB</option>
+<option value="16">PE</option>
+<option value="17">PI</option>
+<option value="15">PR</option>
+<option value="18">RJ</option>
+<option value="19">RN</option>
+<option value="21">RO</option>
+<option value="22">RR</option>
+<option value="20">RS</option>
+<option value="23">SC</option>
+<option value="25">SE</option>
+<option value="24">SP</option>
+<option value="26">TO</option>
+</select>
+                    </th>
+                    <th>
+                        <label class="col-form-label col-form-label-sm">MODALIDADE</label>
+                        <select class="form-control form-control-sm" data-val="true" data-val-number="The field MODALIDADE must be a number." data-val-required="The MODALIDADE field is required." id="fkModality" name="fkModality"><option value=""></option>
+<option value="1">DISPENSA</option>
+<option value="2">INEXIGIBILIDADE</option>
+</select>
+                    </th>
+                    <th>
+                        <label class="col-form-label col-form-label-sm">SITUA&#199;&#195;O</label>
+                        <select class="form-control form-control-sm" data-val="true" data-val-number="The field SITUAÇÃO must be a number." data-val-required="The SITUAÇÃO field is required." id="fkStatus" name="fkStatus"><option value=""></option>
+<option value="2">PUBLICADA</option>
+<option value="3">CONCLUIDA</option>
+</select>
+                    </th>
+                    <th class="datewidth">
+                        <label class="col-form-label col-form-label-sm">PUBLIC. INICIO</label>
+                        <div class="input-group date" id="DateStartBuy" data-target-input="nearest">
+                            <input class="form-control form-control-sm datetimepicker-input" data-target="#DatDateStartBuyeStart" data-val="true" data-val-date="The field INICIO must be a date." data-val-required="The INICIO field is required." id="DateStart" name="DateStart" type="text" value="15/06/2026 12:56:23" />
+                            <div class="input-group-append" data-target="#DateStartBuy" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="far fa-clock"></i></div>
+                            </div>
+                        </div>
+                    </th>
+                    <th class="datewidth">
+                        <label class="col-form-label col-form-label-sm">PUBLIC. FIM</label>
+                        <div class="input-group date" id="DateEndBuy" data-target-input="nearest">
+                            <input class="form-control form-control-sm datetimepicker-input" data-target="#DateEndBuy" data-val="true" data-val-date="The field FIM must be a date." data-val-required="The FIM field is required." id="DateEnd" name="DateEnd" type="text" value="15/09/2026 12:56:23" />
+                            <div class="input-group-append" data-target="#DateEndBuy" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="far fa-clock"></i></div>
+                            </div>
+                        </div>
+                    </th>
+                    <th class="tablebutton" style="vertical-align: bottom">
+                        <button type="button" id="btnDirectBuySearch" class="disableOnClick btn btn-primary" onclick="DirectBuySearch()"><i class="fas fa-search"></i></button>
+                    </th>
+                    <th class="tablebutton" style="vertical-align: bottom">
+                        <button type="button" class="disableOnClick btn btn-primary" onclick="CleanFormDirectBuy()"><i class="fas fa-times-circle"></i></button>
+                    </th>
+                </tr>
+                <input data-val="true" data-val-number="The field Offset must be a number." data-val-required="The Offset field is required." id="Offset" name="Offset" type="hidden" value="0" />
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="batchtable">
+                <table class="table table-hover table-striped table-defaultsys table-data" id="tableProcessData">
+                    <thead>
+                        <tr>
+                            <th class="tablebutton"></th>
+                            <th class="orgnamewidth">Promotor <i class="fas fa-sort"></i></th>
+                            <th>N&#186; <i class="fas fa-sort"></i></th>
+                            <th>Status <i class="fas fa-sort"></i></th>
+                            <th>Modalidade <i class="fas fa-sort"></i></th>
+                            <th>Data Publica&#231;&#227;o <i class="fas fa-sort"></i></th>
+                            <th>Data Conclus&#227;o <i class="fas fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableProcessDataBody">
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dvz_UJiHhkZni1gVMvoMn%2F%2Fo_42cIlY095nt5lTtIp_zApplSg2LBcUUK9T6dkf19iNMFELqdkYj5orkgNwhtKDarSxKCrP5ob19Pz1hWo14%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>05671/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>15/09/2026 08:16:57</td>
+                                <td>15/09/2026 08:17:00</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dtwvx9SBaiTudHV0ij95S2KpbagGmw29FoKKBljK6lbFt3FNDYTriIMVfj6LXiGk5iyqQEH8xFt0nl%2FjqtoRunJ7wOJP9cL6zVjpJYR8_s_s%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143056</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 19:11:13</td>
+                                <td>14/09/2026 19:12:04</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D86NvgFDAHdpGMRFix7P8owyP7%2F2AdJwSPOQJZajzMV6glGWvT3euSqW74DQNN1cFfBQQ9dwcE9K1y3gjLl6xyRqjnhEDf0SmsX%2FavqibSYE%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>5154033</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 17:35:47</td>
+                                <td>14/09/2026 17:35:54</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Di1hJFiiCdAR15Okp98GYDhnFiJXWx8pFdbQ%2F104jdXEAPpRDDYxPtCIfbbMGe1Ct96Mcg%2F%2FH%2FmZMgYm4dwLBtFuEgXhDONSzCWnJ3A4ygWw%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">CAMARA MUNICIPAL DE MIRASELVA</td>
+                                <td>01/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 16:58:34</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dhj7xMeOPJms297v_LIntR8oEgPZrcxtEnTEEFUeLsDlPpoKzOxY4kc7k3Nf5S87U0R6U68XhMt6SPVkE96DWGJ4DFcSdB38e4A1zR6P5NZU%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>95920/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 16:54:37</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dx17fi8J86PziRn9dvscic%2FNhbvBwwb9JcQhIfIyvT7GiZA5qJScDZ4nX4TH2y1lahdpLuZO5DNXIOb97AJe3_5SLHkOMeXEnYDQyXwOXRtg%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143614</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 16:32:36</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D_X1LoHJEn5wzOWZyFA21owCtdgZPGBBr8yawE7A8nwATtAnO6a1xHRW4M9vZwQ0Po2PCXi6K2XKak_fFirWZxE66nPiqzCosnLNz22aljTM%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>10594/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 16:02:24</td>
+                                <td>14/09/2026 16:02:27</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DJOVODvli_MfgR4AWzlqzO7H9WenAXEncBkN8slThY41RESQ4H01i46yJDRhjMfdp%2F211GQl80951OqBX53XlKvjWe19k%2F4XuXaKSf%2FJYERc%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143135-1</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 16:01:33</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DzZKCtI3n80NnhWE74SnvvGlqs%2FBQbFgWUB6jLKBZQYUAWnPbmUnmHHyNgb8yfCNpYrvpYoIBd4Wwg9ZmM61dGXZ0pjahnC9TqLSKEe7ud3w%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>96479/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 15:55:53</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DFOlRdJvDrLUhFok_c6uC6TpxuO5HQ_dgX4eqqoD6aYYKnOgiSlFgVxxyHr%2F%2FETKMM5S_CVhpzpzAHcVlLZtd5Wc8sprzpA4Hb3Y6qo9hvdc%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10142931-2</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 15:27:44</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DcYAVuXQdDGb2Q0cj3zXd%2FN3OzXnu8w__Ib_GxFS_sG2RpITbkgw3lhvdpEyLm0qwONoUkgDzoDQKB1pMp382N6vYcSbYUwBoSIbe29EskRk%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>96484/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 15:11:19</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DoZo2kfSWTnBjchQb7X4688EEtIXBW2MJcJMsS3lmZNM9xLAHiH_KpLPIw6_u2sitjkm1AMj6%2Fe78ONwcb6vqUpAtkDCPPXNrF0DtjE2yJno%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE PETROPOLIS</td>
+                                <td>18197/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 15:07:14</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DbyxU2XHkNIEFRDp_QXphs2IY0O6X5GUm1zs7dEsn5%2F1o1xEvcdsC1907LBnDaCiaxIUjV%2Ftq%2FdbP2IO1hVDs8KTUrq_AiEzaLGsTRjDYIAY%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDO DE URBANIZACAO DE LONDRINA</td>
+                                <td>002/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 13:42:34</td>
+                                <td>14/09/2026 13:52:16</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D711_5IApgjcZSu1oEIrgCLG2bBBwSkGLUBDAZtiLnPJk2tmtV%2F9_xpWQT1nGxGGzxxw8e7zaLEN2MgT%2FGwivix%2FF6qxuBP6te8cAa5KKq38%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>96478/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 13:23:26</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DCPaMonxlxou7QwA22COpZuQFgUt9VCGbKQzMTyRAZFeUYJfzxhtF%2F20bXAan4czhT%2FkMp2mDT7riZxcMe07S92gYmLffNlxt6J3llUs9zS8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10142541</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 12:34:38</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DIenSyrLC49W64CKR7S%2FOzOe65TditJiQkpOrNBWqNXlyrjS9Gq_4sG4TRjqq6Dxh2lMOTdbjpGLYnM35Xshm%2FsKDIIG9vB8HbL2ievYb7KQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDO MUNICIPAL DE EDUCACAO - FME</td>
+                                <td>117/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 12:11:33</td>
+                                <td>14/09/2026 12:18:26</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DRHOOcAXxnJQnXVgWG9zLZTPuAeFK_ve8Ycs3hsAuRsImOU3_SHT0u3YwHXrG_0AqRNurtpueP0IYBUi30Bs86OaKjvoGCXUvAB2ns3%2FCiMQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143321-1</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 11:20:40</td>
+                                <td>14/09/2026 15:35:49</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DHSS4FT_L9_DDLcoUo5mka72aqCvW0gow5kS4M02_I3SbiuvNKgRo3aslZr0MdNGR1lkqM5V0BgyF%2FLt%2F%2FdPh0FZc0DItprUxUvkhlS8AdN4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143335-1</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 11:13:28</td>
+                                <td>14/09/2026 11:16:30</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DgKhwkKW05LI0wrehb6z8Upf3rfIQwBXfavePgXB2WPa66hFV9BxQlszOVeLwX%2F%2FmehPjOn_aY%2FfImc9ckz8UTvpHR8Pt2dsUUPg840oY%2Fg8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>95921/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 10:24:00</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DG7CXmIwk3DGsFq8SHbtWoVzd1wE6muqYzZ7VzOVJjIvY5IZkmUks7bj4Ofq2%2F8jwe_ADIYch%2FmF%2F0oAb8mhw0s%2Fb7WmlRxdkda6P3O455e8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>95922/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 10:18:29</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DhJCydkGSn0O3nwnsr%2FUzqHHqgZ1VDEhWpAGtT4BVIhqe_KWFNbKMWjShZtrxlOk8HlnFT6t%2FQwKmz5RCZmOqKrAEjYBqxYUNUIBz51uHY8g%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE QUIXADA</td>
+                                <td>10.003/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>14/09/2026 09:54:31</td>
+                                <td>14/09/2026 10:13:12</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DpQAsQ7YDN6YzqGwpOpSAyYmtblVXlwtwG71kBXQx4kmZDel3Ehf5wBEcmFP9fmrb%2Fe2zcA5XxPtG9jyooVd_LLnjx%2FiKZqyiX4RlE3IyfP4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE BATURITE</td>
+                                <td>008/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 09:49:46</td>
+                                <td>14/09/2026 09:52:24</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DSGpvsvGlqS2FQ93GNqspf4Ru%2FjD75KUg2BUb72cpWkwGiej2DqB8SkrAyeoc2Z8FaBD4nov9Vqz9cStHLFuJIAqU4O9olx1LNUZ5nsZu1JI%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>95925/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>14/09/2026 08:53:21</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Do5osJ0ZMV8C9lQdcH0de19SmGMMQKcoGmj77ZLMMBklV2DaE52v4kSPP1B15C_VlXVImNi232XRAF84dnJhgN6lpwnWVUSfshmPiOo%2FSlYM%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>174/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 17:45:23</td>
+                                <td>11/09/2026 17:46:13</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D92M7uLGR8jrfj%2F0e55AbEmHKE9qkQAzeVjcDtXL46FQgVzgn_kejgmQIvr53p7KCOESOxADeowEa9vPCe19tenR8TIYDQm1z%2Fp4VPBlvMv4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>171/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 17:30:01</td>
+                                <td>11/09/2026 17:41:01</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DK7Y6jWZt8756fqVT2MU%2FYVRyQ9Zc9xnQUjAKjY7El89VvUezunuFm2oL_gNPvn5v2t9G31KwG10Kcc0H%2FgWxD9Y5T_egpg5EUsXUbv3wyHs%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>147/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 17:10:58</td>
+                                <td>11/09/2026 17:11:16</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DAAoMcE0YPox28Ow7FzoTDkmfsyPnUZ0WL1m83SVTFuVD4LfsILGgiTz40EZvBN8f3l9l4gh3yUGt1tK62cZcKsdcTbNYdIMQWVaRL7rIYP4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE CUIABA</td>
+                                <td>051/2026/PMC</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 17:05:24</td>
+                                <td>11/09/2026 17:05:27</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DgDaaRnLWQvJXFcjye4m9Pcnt0WhG3A8HfRePdTuXvlvIbkEga1E2TYWbqC1snc7vl7oVPiatLhWRbAoxjWTRpiM0CpTMwmPDnw%2F0ulE2zf0%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>94380/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>11/09/2026 16:55:31</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D78ZwEQuVr7fvkGqpXF8_MZfAkh_SSD2tCxZY2PFo74S%2FXAyvvjpzPoMrNpKD2%2FLswRqnM8yJXVbn3flyAoRtIu_1itNiIQOA25mVF0oYiZQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>145/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 16:25:14</td>
+                                <td>11/09/2026 17:05:07</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dn1GwkxBZZbkNxOhl%2FiHfEVVe9HdQ_gTPKQneHZ5A1QzOhM4wmSexTzehnrIfVQRCzzkpnw3431NMLI2odlt0AwJNd7bAPobtacZGT8C9v78%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>11110/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 15:54:34</td>
+                                <td>11/09/2026 15:54:36</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DeqvBJmaGrVlTD82CfAhNjoFI%2FnF%2FVajZYTa0QXB620hOUxuG5_xO8balPfp_HeWDFQfN5sBL0xipCMGG10x4b%2FTrxGu4XlKarYejLUgHMQ0%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>142/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 15:54:01</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Deo6dbInKDy_7d98lJXeC16MzAME9uK8_Jd64lnXP_hntEFqxtbRIM7rbNdwNI4PLyTIEWpYxwSn5_SgdYhgEuEiEGFGHE4Ps1B8lCndLPr8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>116/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 15:39:53</td>
+                                <td>11/09/2026 15:40:01</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dxrj2wJ7llqsfmIqv2CP88HWO2qml%2FOOMqX2JAhykrJN3wxiobnoPnIXPukcxTe1Bs2cOMPnE4nvYjQ4v7XsHs%2Fdp_DicRgH2GNK21Eq7jH0%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>95609/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>11/09/2026 15:26:33</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DQlLJGg1RyQ7e_j7nXP9wFAj0OGJv3IpZTXOBYgbZGIVbuC3nyrGGVxC4pJVf2%2FdYoeiCFxPjIvEVqc7g4oWWC4IJkSV3Vle%2FLlqsfZwatJo%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ENGENHEIRO CALDAS</td>
+                                <td>029/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>11/09/2026 15:17:13</td>
+                                <td>11/09/2026 15:17:16</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D3RA%2F6Dhwn2NQOlPmNPf6S9iTIxm8DhyNbcPN41dbJK2ppGgNPZ50HUM2gv0cL7tXXmMn7MAw3xz6koswnXTgGwB0%2F%2FzDxKygpcGHiree3tY%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO ARQUIVO E MEMORIA DE SANTOS</td>
+                                <td>19/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>11/09/2026 13:41:27</td>
+                                <td>11/09/2026 13:41:56</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dv9hRnYAvFkFAJidhLPdWvGa4CZzsF4eoUJavA7CKcH8gWbUZOT7jjjmdX%2FzMJS3UMbbk_uSZRCyA3pEwl2nWP%2Fzi%2F94EB6uIZeOXFdm6vIU%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO ARQUIVO E MEMORIA DE SANTOS</td>
+                                <td>35/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>11/09/2026 13:17:53</td>
+                                <td>14/09/2026 10:15:44</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DTHW80ha6m1PqKGHazGSVyW6egWhXT_qwGHxw_lIUxUE7qGju0hwqQN7zEauNzdGJIzM%2FwPqVwUJFKqs49IH2PRaLZOiN0Qo3UoqSUCFXatw%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10144052</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 12:47:18</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D1_1vrotDRYb6PfjgQ%2FijoVVF2OekgvE4yApd3shZdg42iEQQtGYSV36lF2%2FMBnAqSno_Yupakuj_9Wt9Gr3czUxDoglS55MBuU9sXXkMPV8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>95414/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>11/09/2026 12:43:01</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DDKfw1ss3qx_iBnqeepatys4PeIVJQx0DRd4_Z0mHTb75fqPOh6aKncwZREMotMDrvkQ_rJaB5cPzrRbgzppzO2umk2P9Gek6joqmtXigNoQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>111/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 12:39:27</td>
+                                <td>11/09/2026 12:39:51</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DoyXJBYt33uWk6JJs3rrooCbAIKg0D9nebcEjpjSSy7aiOE53HVS6S2Rh_2SL8HKJKgg7mYlEctQ7gxkAY7J6G_jO7jJrrQSva7537_Wci4k%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143986</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 12:34:57</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DqIHkZb6KSb8dZRwe%2FY0dNYc5fXTb1aeMpPnhLOmUvdfYX5_BqFdaODdlXbNU2oFEQc5NVuh_GEFwUlxFdFa1TuCC1TUKMUWT_X7UKVLhBYQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>110/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 12:25:45</td>
+                                <td>11/09/2026 12:26:10</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DZaMBnEZuHD5ApjH5Tl_tRGIZ0JIrS5zE_j%2FmEkTg%2FGplsCASoLQXJiIvi6JWEEcKliX%2FGEHvNilZBViAajnICGfB02zWYJXYWal9mwvBbJk%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>67/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 11:37:30</td>
+                                <td>11/09/2026 11:45:20</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DapsLjGyyAxSQTYoavrsjqmA_%2FYVAZc3cEX9lzwHB87aMEfFMf%2Fv3hqxwOGG0uAGv6eo0mR7OLj9euml1F31xF2EW3YlUtOptmqEC7CCIUl0%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">AUTARQUIA MUNICIPAL DE TRANSITO</td>
+                                <td>20260903001T</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>11/09/2026 11:15:26</td>
+                                <td>11/09/2026 11:15:50</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Drq0cVFrMUD9s5t07%2FLBmLlnyhNGR05J5yl5Bhroky8z6huFa2496%2F%2F010mARaF_%2FKg75twwpOJzLPcDBso0Rkw0IWKd7lBHRD9BRxKByHpo%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143270</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 10:54:14</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DMBzNpFOxitLpBS2mpUGvlPpX8yqiYZtZLMvihH4Z0XuoUEp8vWhrzqRJJU60a7wv_iwS%2FNrpX1YPb15gUQrVG2asTxxcyLZeXYXy8O0WeWY%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>5157246</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 09:25:53</td>
+                                <td>11/09/2026 09:25:57</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DRUnFLppXLs%2F21OBGLTFQJfYDv5v_x_3bdKZm5tpsOClTgx_mH1fAfSAN2tqNrJVMRotbkSLd3MWvFB7d89I3Uk8zGNm1Tdl2RmxBvFRmq8k%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143020</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 08:42:45</td>
+                                <td>11/09/2026 08:42:48</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DQWAbCNIp5ObXhCnCDxEHmeolr5fnos4IypZdC67Il7uoXTYE7St%2FRmtkB26FNYcdAdXekQpyojw4c0lojrhT7RRm0nCKY8HOBN6ahPMgYgU%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>11111/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>11/09/2026 08:31:22</td>
+                                <td>11/09/2026 08:31:27</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D4YEQ6LtJ4SSPGyaNf6Hlyk7g18hhc9XhR6IVRBm8Kxdmfa6pFJ8JXC8qRF8FV9%2FFfrvBONQpbKBSH%2FjIojzms%2FyED33JhOZnWQy_dkEkUMQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>052/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 17:38:21</td>
+                                <td>10/09/2026 17:38:25</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DXYKJTe%2FwsI2Q7nwkCqz3erJF39fxouKHkgKRdLkXp6EZZvF1HiJt%2FF8yo87_Y4fYcLWrvRAkWO4nwYnsJeQTNgEVgYvX_5pg5Xq1ysYZ168%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE TEIXEIRA DE FREITAS</td>
+                                <td>DLS-091-2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 16:37:31</td>
+                                <td>10/09/2026 16:37:39</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DVglzQEzxZsUsrGvHI9Q4WtLaS3sJJZjVHDHbQNcrTT3DBIZM%2Ff9K7uqV9hccef1Gu%2F7hRfLrZ9SkAt5ClbDTRteK0RC9wg_yU5maEu_IB%2Fk%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">INSTITUTO DE PREVID&#202;NCIA MUNICIPAL DE UBATUBA</td>
+                                <td>026/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 15:47:37</td>
+                                <td>10/09/2026 16:03:22</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D7S63BwZf7SFhnUKgBeqQ1YsKDHG6T48SYT9iUnhFU_XXgASCFYCVOnoNU5P_RxT0iFmRDnRGL6RkB%2Fpi4x7ctlBU4YHPDUHQHflEwvgQVKc%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">CONSELHO REGIONAL DE PSICOLOGIA CRP 12A REGIAO</td>
+                                <td>52/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 15:38:46</td>
+                                <td>10/09/2026 15:38:53</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D0%2FYsezhWqWxREZKeetZoLg6ss6YXP8cu0Dx4ppEAw9L_TrfKyGXMRVX0muCxGNmahbnTmzslFL6gkDXEtVdr2u05SOGRhWeXw08ZDu9u3fE%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE RIO BONITO DO IGUACU</td>
+                                <td>00000028</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 15:38:33</td>
+                                <td>10/09/2026 15:38:37</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DQkj2jZ2zmZ47l%2FmJVEGX7s82GjSstE_JS9u%2FIJJTwOxbcWuth3o5mpKinvhpN7M8u4u6umGtf03TShH9ZFhZWdTFAddRE3KHLSOziFlpu74%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE RIO BONITO DO IGUACU</td>
+                                <td>00000027</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 15:31:40</td>
+                                <td>10/09/2026 15:31:42</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DLTIhH1Koioz2XuNi69lnaNdbvx%2FOGEw9LJd42v1fufImgdwFEWYzqlXD793%2FMwaIYrrOkvPr40oCF_y9yk4lS3pH4LJVfWORKjbsenvi4Ms%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>5156053</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 15:18:40</td>
+                                <td>10/09/2026 15:18:44</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DKHCKdE31gFwsW3kUjRnSupYWpJP3t8Bj5iW_4fHGRP4RQRn8VXT0ByNCzbqXuHIxSf7SrhJ40wUQrp0vy2zXg9VEtAZNqI%2Fatvem3wpgAGY%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE RIO BONITO DO IGUACU</td>
+                                <td>00000026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 15:12:09</td>
+                                <td>10/09/2026 15:12:12</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dx8vcrOHP0nXOOWORTUjCjpLzMdwbPb4AoZObQIsDlOhp4_GTbjQ%2FfDTI%2F_h_WBJj6VotvLSm_FK3IqDm9_Qyi9BZe_0IXABbDftUtKWB4ww%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>5156054</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 14:44:24</td>
+                                <td>10/09/2026 14:44:27</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D0MVO_l1nlKSM2rn4%2FmwytjwMSZXYTWNhmUx_0Zem0fELpI9WvtPTT7NeT9q82eCNvWjch%2FaVq5L_PIadOX8fxXCbNsjjc7_28ROovaIf54s%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE PETROPOLIS</td>
+                                <td>18115/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 14:42:29</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DAQKzUcLYJo2B2NpNNlpxWILVXvsGGc2mnwuhIHiV580tKqIGHgls8gJACbL%2FQJrBx2bOZ7ReMNJuEJtUAJKkwFmgOsIu3kVg_MksswJmWD4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">SERVICO AUTONOMO MUNICIPAL DE AGUA E ESGOTO</td>
+                                <td>07/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 14:32:03</td>
+                                <td>10/09/2026 14:32:11</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DL0HUGohoOfVvL3lXVme5BM8N8nP%2F4Cnny0WDB66KZ504Ldt9q%2FhAeE%2FNasEw5uSJCynr9u81IcSBY_UpvoEqwZbG1Y742F6CnFTm_%2FCATnw%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143121</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 13:46:41</td>
+                                <td>11/09/2026 08:43:31</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DQh53Wm2AnzYMNkzS5HlQfAEClDwinDMln9kifJb753G74an%2FiTw8P1zx20fWnzZxJJMo4JkZlS5swCecs1Qyc_Lq_2GI5e2PvOPplykYA8Y%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE MAJOR VIEIRA</td>
+                                <td>042/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 13:15:09</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DEHDgDkVIgF9_uV7ysftQ3KPPR9wqaS09rkiTuJksqXWalRzeGHuW%2F7AHFNzbE41%2FxKX0zowheRCaSBcDTAQgfm02K4YELVFAmwGiKoyT_Yk%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>94223/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 12:45:04</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D8E2iM6z3bVcx0mT8pN7xcRgxHM99sRCabq%2F_MA%2FAhd0ygQjEA10RXM%2FPBPrifnX53uQxJ82c6fnjdI5466ILGTc8HMrUFDkA9VZh9JGJhC8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">LOUVEIRA CAMARA MUNICIPAL</td>
+                                <td>114/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 11:58:58</td>
+                                <td>10/09/2026 11:59:03</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DgKDdqwTOOfNzbIwQdt3MaxCbskL4dZxd1ByBN18hX%2FKv9lhY%2FbyXWpEop323G3oEDzKJk5%2Fu6NuY2sknhu_oaQmYsa1jUeH4AjVVkmd71dE%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">LOUVEIRA CAMARA MUNICIPAL</td>
+                                <td>45/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 11:45:12</td>
+                                <td>10/09/2026 11:45:17</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DMDNsDp0lI9XVdN6z9Pwldso69SOLIRK5LYoi1Bzyum0nVmCPRWy56f4ldmAnF6tgkCglSaZzNjvJjKm_Op_KugGbJOz2po9Y8rOcaylfXe4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE BATURITE</td>
+                                <td>2508.01/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 10:46:23</td>
+                                <td>10/09/2026 10:50:30</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dvsxv1sdymymQb8PMbWuI7wTB7WPWcMzpB3jvLx2mM0s1AENvgRPoNGebcSuo6uOXC96yerYiXcNJTdFxPq8w6Mxx2501A0ZdEo7O1mQ_HC0%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE BATURITE</td>
+                                <td>0308.01/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 10:34:03</td>
+                                <td>10/09/2026 10:38:38</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DeR4L5Y9PilqO3Dbt0GPDzEftSumEUUcDmmsram%2FfX00%2F7REZxpkr5jiIT5XyDHE8ZErO9Nbc_eGvEAwqeXzpVkJGt4otJbZOB%2FhSEbCSRWc%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ENGENHEIRO CALDAS</td>
+                                <td>023/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>10/09/2026 09:00:20</td>
+                                <td>10/09/2026 09:00:23</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DYOZn3Ga7Tssb1g%2Fp7euwQu1FpR202WnJ_NwHoq%2FqRJsZpUnIEsaai1P6ZmM87XNPjGTCGYgg3%2FBuyyNqaRENsEdFCFVdEfsqvVSNVNnWN7w%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ENGENHEIRO CALDAS</td>
+                                <td>032/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 08:54:05</td>
+                                <td>10/09/2026 08:54:08</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DV2FsqYHmgSN_M_2WMdwcVQpDOY9fh398_huIK74kh9lxotKzO4nHlDyDgCD8fxsWhtpxE47nhAQwpWZEtPQngABT9fDl_w9XcPNPRPzkMiY%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>94264/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 08:40:16</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D52dyIhWid5qxJzawJXioi_dxdtSUQxlPdDc2lBLZeAWCwopQVkX74ZZf5Q0exipFqTVLwOtI5P2w9jLyEJwuZqRcy2kEsWYSMhbi6Y8uEXk%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ENGENHEIRO CALDAS</td>
+                                <td>028/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>10/09/2026 08:26:58</td>
+                                <td>10/09/2026 08:27:03</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DEvVAdgRHvqbRfq1HIVhDNJ42DU_Xe34CAb5K2nTDiF4olZj9TJfjSEzJiB8kd5cMiSbWPH3yDMXvpcggajrPUeYugDUXWMHsN_vUDe8GPiY%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDA&#199;&#195;O CX BENEF SERVIDORES UNIVERSIDADE DE TAUBATE</td>
+                                <td>10/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 16:56:58</td>
+                                <td>10/09/2026 09:49:01</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D2POz4Q7hY36A211M8CbgSBJ5Yo5i7Q16VJqUCFLKgAZjaRxgO%2FjEiUXOlzgU3dBLK6RqEk8IREfyrrlpGjFmiHKtIl_NL7dtOmawZ1VAj90%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92054/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 15:58:02</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dzf6LPbpBb5djH0n2TsKazxcuu0vx0kPvstcfasw9Y7BXknrzvL4sOCKKqt9XjQcfrXrDNP0SQN9InuV7rmigeO0xIBFRKnD0Y8AWQRSh2rM%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE PETROPOLIS</td>
+                                <td>17302/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 14:44:02</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dc_5FvDcQuXsrAPX9nIQoC8GjOGESWQU7xF8%2Fp7lepGgEpV8_IXN1QpOm2r08rfnWapoltY8qVpmi788a40ZfJZ3Sius4GoIeLlnDefzOvnU%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92967/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 13:05:54</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D6E49QcCkSQxfJU9mr98IyrKlUxmQOX8hWteJI4Z%2FjNqiPv736w2kgMef2wdT6ZcyUisUMMQrSnELGLoqpdyypjpZ4HEhJSQh%2FJzBM7TDdW8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92987/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 13:00:32</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DjmalqW1LM%2F5u5LNuOHDvQ9yn6XDd8m0gOYf8EtJ7AK4W4gWg06x1fvgcSLNVHkEPd%2FPb1q7YxdxSF_WW5BCDF_GJIzdzaoBzi6tIq%2FnzfCA%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>93007/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 12:52:26</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D6JpBnTsL8EYvp7a_I0EZjdFTh3mnMKjQ7tr5_gQ7%2F99TXiNpFw3od25s_RUWuO5EXLcorbGN2Eg53mMze44lA9azddqH0E7iT5eWr6yj0K8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10142303-02</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 11:28:53</td>
+                                <td>09/09/2026 11:44:45</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DNIESW7ROLrzU2MuapQFTUMwJHAL2QkRdP0Crj7qsAt6g2%2FcD4ncH5FRbl15eUf9rXhgnQcUpbQnTFZZe4CMOQmAmLykkp4HfsdEsjaN4N3g%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>93775/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>09/09/2026 11:09:41</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DWNlM4cTWPwRmM4PKrp88VobQyCqGT%2FZZrH5%2FAkQzfU_re0yTCQ1IsxtVluwdT4ynal3eWg0SV4y_U1GYl6fvXUfCQSnPgM2N3G4qL11BP%2FY%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ABATIA</td>
+                                <td>15/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>09/09/2026 11:02:53</td>
+                                <td>09/09/2026 11:02:59</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DWAbnIoA4xYUsv4vT7xQLLaXP9p_SGe02ttCO0UlOZL1Alw2vwLlapGsCR_tlsm9lkSc9F0VYRMwraHCBsFf2hl6gNq1jmQ4s4Po3Xy22ifo%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>5156948</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>09/09/2026 10:11:20</td>
+                                <td>09/09/2026 10:11:24</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D6Po7fTGkji%2FzzLuEbbNweYQlBxjESCrdk_i5gNF0c2DKh_nQ2ptikjP3wTfbwWxZenBg0YEIN6zRXGToDxMYuEiAgCaAyByFylc1jzBNs5k%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>93301.2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 17:07:23</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DZR3QusSuSfistIcILSkr845RDH1_sEoUh5bdJeLH7zl3Y6apIWy8c0LzxJQGzNqQ35lm4DuJJ0VCs9E91nyNPU7XXP6FzuuEkAivyy5M1B0%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92135/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 16:44:36</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D27sCVp1SiG1jSHKsLkHM8PvtGbQOfRM9j4OHHWVRNiGr2FwX8ICfdCl8gKcxYU4oxPs9GGFJO3_vxinl3f0sGiVqE_gclH83cD1ycwPEXv0%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10143029-1</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>08/09/2026 16:18:54</td>
+                                <td>08/09/2026 16:18:57</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dxb6ZydEtx1iPG6UurDD%2FcmetEieiMlAQ0jSgn9jz8FPg%2Fc3KNJk3LpHKw0V7poqwShwhoFDsREVknYalLnQVVBKydELo33AVbUMq5gL3gP4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+                                <td>5156092</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>08/09/2026 15:45:41</td>
+                                <td>08/09/2026 15:45:44</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DZnOrw2g5Kn%2FfKGw5kIuX6nOT26tsWnGNUGSd15A0pQ0z4i_byA6_1RjCI798kZHpkZrpSo_7UpL8sMhi65Ydg3%2FKSKJP5FdPinxBPuRZ_GA%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE PETROPOLIS</td>
+                                <td>30715/2025</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 15:13:31</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DSmAANrS18oOrNe%2Fa1AlToA8gZkg%2FMz9WpMSxLvQ7EMT1QBZ7skB_yjbgUu3gOFpvq6mBYb%2FWYI_q6LIVle3O25cSPxDwlfWyyuzenkghZiQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE MAJOR VIEIRA</td>
+                                <td>041/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 14:39:38</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DRwXjIr0k354AWuUssA6ekEwJ039eB_wyLBSsO5yPOfem%2Fmu4pTcRKhyybDL4Vx%2Fa60wwdWbZ2F1a3tjWes8ytD64H%2FmrFMbzKmLRazgvg2I%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ENGENHEIRO CALDAS</td>
+                                <td>033/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 14:34:47</td>
+                                <td>08/09/2026 14:34:50</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DpkpAvVw4vJWs6XzdfDrJBfrtBAOyHNs1qkqj8J%2FFkuXyS03%2FQePK9xH48KdXzOm5uCU7RfLAX_DAYaq7Mpxc8UGpaSajZ5Gx8NQAH7ZKU90%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ABATIA</td>
+                                <td>84/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 13:55:30</td>
+                                <td>08/09/2026 13:56:34</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D6QZmPuINc5lli3GlHcR_e7_mrE%2FHJTdeXVtSAatpfPVHp%2FTrmbnoYSU1F%2FjzXmn3a60onw7orB9bNW56t92r0YV%2F9C%2F4ZcHTUn9uMz27sJ8%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">CONSELHO REGIONAL DE CORRETORES DE IMOVEIS 23 REGIAO</td>
+                                <td>0000005</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>08/09/2026 12:55:19</td>
+                                <td>08/09/2026 12:57:12</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DgP2FcH8Z10sKLhokjXs8%2FUcGUlM7C6zTMwJ_FhFH1TleFq2SddrSETplJiUoC5_ARGxITf7tEF310YB6yV4%2FjMI4zU_aDvOyu_%2FEgXaWGPQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92795/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 12:07:59</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DpBEpY0Rdtk_xreQ4VOzuIr78NcidYE2CWQA%2Fma%2FGNzUxdefYh3vEpgGNQJ03W%2FZV0Mtq8oPKiCbdKpVizpWI40Kg3LzXdH68ij%2FPQtxrfcE%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE MARACANAU</td>
+                                <td>149033/26-DL</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 11:46:46</td>
+                                <td>08/09/2026 11:46:50</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5D9x1r%2FoZVtBnm7BV%2F5jMxY9WL0tX2LPGxljI6PrWTFTZwu0nqTEpstuR9ujwx%2FlT9rjapQtHkgjXFeZGVk8h0wshkMl%2Fcd49z0jcl6LehRdM%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92241/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 10:15:07</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DGkLH6%2FLdOvhxzPRa8ufyabcjNw_Tphg5dlTxB7VdlubYQsQU0BFNQVTCkC9RQkEQcOjMTtUD3ecvbrX%2F2AATxUEx9EvUbQ6bN6CPbmkFDU4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">PREFEITURA MUNICIPAL DE OLINDINA</td>
+                                <td>018/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 10:09:56</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DL3TJBaPmQ7bmocVMZiOn8w9_HNl04L6tOTw2zsgQ2yjdgIWn%2Fs%2FdxKuNATscXlXQ7vVfbysbwwXUbBL6CVV3Jlgm0t3xN301sF4bZ1o1BOw%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10142230</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>08/09/2026 10:04:28</td>
+                                <td>08/09/2026 10:04:33</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DSquQs%2FjITIjMP_pl3notdTcEeUHeJ_u%2FoCuQsQZVg442cJPfhybY8FrtA99NJLvbYCJog8ZD%2FpdVtkK7lEBk7%2FuYkX7eRVTodXEpSMvi_8Q%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92056/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>08/09/2026 09:55:19</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DX4QDW6zvJmhT8dRnsG6KtrDWPOzgHs4Rzq%2FWQ_ns2DyxTEGiKkMmcrS5o3%2FEMpoco3prT0dP5EyyblGjNnvy5qHLn1_TPwTPXM3B0HTidNE%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">MUNICIPIO DE ABATIA</td>
+                                <td>14/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>08/09/2026 09:53:34</td>
+                                <td>08/09/2026 09:54:13</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DPIes_wbwKRqUudvEpE4B2%2Fq10yVdmiDjPPAHN8bnirdzXCTRxg2McXDrhlT3mL4MdZ2kXponDLB8rTc0tUYvwLGXi%2FQH2RbOv64N1XbLkAo%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+                                <td>10142293</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>08/09/2026 09:11:42</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dt1nVGOgv%2F8FycLiiVoYLYaRFqEyrGx51mAM9YtzkaRsiTwvQ06QgnrxZUSKLHnmQlecE7tQf8qsrII%2FoRSsbHQVba3_0PDUbORe72BTkAW4%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">SECRETARIA MUNICIPAL DE EDUCACAO, ESPORTE E LAZER</td>
+                                <td>002/2026CR</td>
+                                <td>PUBLICADA</td>
+                                <td>INEXIGIBILIDADE</td>
+                                <td>07/09/2026 17:36:24</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DEwCiV4oAYbsrJrqgQshlwk3Lyv4mB2Io_DYE_mxs3oRyxPvm0biQMwf4_Mvh5R5yCN6VBCW4GI1IZTRj5dROTBB8fFUhoT_il7VVWC4SWTs%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>92350/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>04/09/2026 17:30:09</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DEgux2Ny66mQasnRQAX7QF%2F8loOcWzToCABjMgkYV1AIndgwkFHfEyrcaZY_rxU1tyExrkzB3fD8ybbQ2nTbT2pRhwfO0kaNe_msUuw0yoMA%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">CONSELHO REGIONAL DE PSICOLOGIA CRP 12A REGIAO</td>
+                                <td>51/2026</td>
+                                <td>CONCLU&#205;DA</td>
+                                <td>DISPENSA</td>
+                                <td>04/09/2026 17:24:14</td>
+                                <td>04/09/2026 17:24:20</td>
+                            </tr>
+                            <tr>
+                                <td class="tablebutton"><a class="btn btn-primary btn-sm" title="Informações do Processo" href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DsPYWgPWUzOyvePye96jd%2Fl3YmCN0y8VQ4JfRZuC1byak1v5O0d%2F7Ra3zGwQGLct4vrliopSZYqNHxmJIsu5mrOnuNsSAkdftQ2zSs4jMWBQ%3D" target="_blank"><i class="fas fa-info-circle"></i></a></td>
+                                <td class="orgnamewidth">FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+                                <td>91907/2026</td>
+                                <td>PUBLICADA</td>
+                                <td>DISPENSA</td>
+                                <td>04/09/2026 17:22:21</td>
+                                <td></td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script>
+    $(function () {
+        $.fn.dataTable.moment('DD/MM/YYYY HH:mm');
+        $('#DateStartBuy').datetimepicker({
+            locale: 'pt-BR',
+            useCurrent: false,
+            format: 'DD/MM/YYYY'
+        });
+        $('#DateEndBuy').datetimepicker({
+            locale: 'pt-BR',
+            useCurrent: false,
+            format: 'DD/MM/YYYY'
+        });
+        $('#tableDirBuyData').DataTable({
+            "language": {
+                "emptyTable": "Sem processos nesta pesquisa"
+            },
+            "ordering": true,
+            "paging": false,
+            "searching": false,
+            "info": false
+        });
+
+        AddFooterResult('tableProcessDataBody');
+    });
+
+    function CleanFormDirectBuy() {
+        var organization = $('#directBuyTable input[name="Organization"]');
+        var number = $('#directBuyTable input[name="Number"]');
+        var city = $('#directBuyTable input[name="City"]');
+        var dateStart = $('#directBuyTable input[name="DateStart"]');
+        var dateEnd = $('#directBuyTable input[name=DateEnd]');
+
+        organization.val('');
+        number.val('');
+        city.val('');
+        dateStart.val('');
+        dateEnd.val('');
+    }
+
+    window.addEventListener("load", function load(event) {
+        $(window).scroll(function () {
+            if ($('#tableProcessDataBody tr').length >= 100) {
+                if (IsScrollableByGenFunc()) {
+                    GetDataFromScroll();
+                }
+            }
+        });
+    });
+
+    function DirectBuySearch() {
+        ExecSearch(0, ClickCallback);
+    }
+
+    function GetDataFromScroll() {
+        var offset = parseInt($('#Offset').val(), 10) + 1;
+        ExecSearch(offset, FeedCallback);
+    }
+
+    function ExecSearch(offset, callback) {
+        ExecuteCaptcha('publicSearch').then(function (token) {
+            $('#loadingModal').modal({ backdrop: 'static', keyboard: false, show: true });
+            var organization = $('#directBuyTable input[name="Organization"]');
+            var number = $('#directBuyTable input[name="Number"]');
+            var city = $('#directBuyTable input[name="City"]');
+            var fkModality = $('#directBuyTable select[name="fkModality"]');
+            var fkStatus = $('#directBuyTable select[name="fkStatus"]');
+            var fkState = $('#directBuyTable select[name="fkState"]');
+            var dateStart = $('#directBuyTable input[name="DateStart"]');
+            var dateEnd = $('#directBuyTable input[name=DateEnd]');
+
+            var url = '/DirectBuy/GetDirectBuyByParams?Organization=' + organization.val() + '&Number=' + number.val() + '&City=' + city.val() + '&fkState=' + fkState.children("option:selected").val() + '&fkModality=' + fkModality.children("option:selected").val() + '&fkStatus=' + fkStatus.children("option:selected").val() + '&DateStart=' + dateStart.val() + '&DateEnd=' + dateEnd.val() + '&token=' + token + '&Offset=' + offset;
+
+            execAjax(url, callback);
+        });
+    }
+
+    function ClickCallback(data) {
+        $('#tableProcessData').DataTable().clear().destroy();
+
+        $('#tableProcessDataBody').html(data.html);
+        AddFooterResult('tableProcessDataBody');
+
+        $('#Offset').val(parseInt(0, 10));
+        $('#tableProcessData').DataTable({
+            "language": {
+                "emptyTable": "Sem processos nesta pesquisa"
+            },
+            "ordering": true,
+            "paging": false,
+            "searching": false,
+            "info": false
+        });
+    }
+
+    function FeedCallback(data) {
+        $("#tableProcessData").find('tbody').append(data.html);
+        AddFooterResult('tableProcessDataBody');
+
+        var offset = parseInt($('#Offset').val(), 10) + 1;
+
+        $('#Offset').val(offset);
+    }
+</script>
+            <div id="init-notif-popup" class="init-notif-popup">
+                <table class="table table-background">
+                    <tr>
+                        <td>
+                            <div class="batchtable" style="overflow-y: scroll; overflow-x: hidden; max-height: 30vh; ">
+                                <table class="table table-hover table-striped table-defaultsys table-data">
+                                    <thead>
+                                        <tr>
+                                            <th>Cliente</th>
+                                            <th>Tipo de arquivo</th>
+                                            <th>Status</th>
+                                            <th>Data notif.</th>
+                                            <th class="tablebutton"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblNotificationBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div style="text-align:center;">
+                    <button class="init-notif-popup-dont-remind-btn btn btn-primary" onclick="remindMeLater()">Lembre-me em 8 horas</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="/bundles/JS?v=Me0BpJ_zHNG7ZhrL6CxLoRKjSlztzPQ0AYf8UkcmmWk1"></script>
+
+<script src="/bundles/bootstrap?v=1VQ7_5lin6jhWyWXJJPRCW2ALPTYc1CLU1-SlhfZL1w1"></script>
+
+<script src="/bundles/modernizr?v=wBEWDufH_8Md-Pbioxomt90vm6tJN2Pyy9u9zHtWsPo1"></script>
+
+
+
+
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
+
+<script>
+    var circleElement = document.createElement('div');
+
+    circleElement.style.cssText = `
+   position: fixed;
+   z-index: 9001;
+   height: 60px;
+   width: 60px;
+   border-radius: 30px;
+   transform: translate(-50%, -50%);
+   background-color: yellow;
+   display: none;
+   opacity: 0.5;
+`;
+    circleElement.setAttribute("id", "circleDiv1");
+
+    document.body.appendChild(circleElement);
+
+    function recaptchaReadycallback() {
+        grecaptcha.render('captcha', {
+            'sitekey': '6LdpKvsmAAAAAA4rzH5iQNswgItyulQ1J2HQ1FkK'
+        });
+    }
+
+    function suppRequest() {
+        $('#loadingModal').modal({ backdrop: 'static', keyboard: false, show: true });
+        execAjax('/Home/SupportRequestView', suppRequestCallback);
+    }
+
+    function remoteSuppRequest() {
+        window.open('/Home/RemoteSupport');
+    }
+
+    function suppRequestCallback(data) {
+        var id = CreateModal();
+        $('#' + id + 'ContentModal').html(data.html);
+        $('#' + id + 'Modal').modal('show');
+    }
+
+    function showProfiles() {
+        $('#loadingModal').modal({ backdrop: 'static', keyboard: false, show: true });
+        $.ajax({
+            type: "Post",
+            url: '/Home/ShowProfiles',
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                data = GetNewData(data);
+                if (data.modal == 'error') {
+                    $('#loadingModal').modal('hide');
+                    $('#errorContentModal').html(data.html);
+                    $('#errorModal').modal('show');
+                }
+                else {
+                    var id = CreateModal();
+                    $('#' + id + 'ContentModal').html(data.html);
+                    $('#' + id + 'Modal').modal('show');
+                }
+            }
+        });
+    }
+
+    function changePassword() {
+        $('#loadingModal').modal({ backdrop: 'static', keyboard: false, show: true });
+        $.ajax({
+            type: "Get",
+            url: '/Home/ChangePassword',
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                data = GetNewData(data);
+                if (data.modal == 'error') {
+                    $('#loadingModal').modal('hide');
+                    $('#errorContentModal').html(data.html);
+                    $('#errorModal').modal('show');
+                }
+                else {
+                    var id = CreateModal();
+                    $('#' + id + 'ContentModal').html(data.html);
+                    $('#' + id + 'Modal').modal('show');
+                }
+            }
+        });
+    }
+
+    function showUserSessions() {
+        $('#loadingModal').modal({ backdrop: 'static', keyboard: false, show: true });
+        $.ajax({
+            type: "Get",
+            url: '/Home/UserSessions',
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                data = GetNewData(data);
+                if (data.modal == 'error') {
+                    $('#loadingModal').modal('hide');
+                    $('#errorContentModal').html(data.html);
+                    $('#errorModal').modal('show');
+                }
+                else {
+                    var id = CreateModal();
+                    $('#' + id + 'ContentModal').html(data.html);
+                    $('#' + id + 'Modal').modal('show');
+                }
+            }
+        });
+    }
+
+    function updateUserSessionView() {
+        HideModalByDivId('divUserSessions');
+        doAction(false, 'Get', 'Home', 'UserSessions', ['asd']);
+    }
+
+    window.addEventListener("load", function load(event) {
+        $.ajax({
+            type: "Post",
+            url: '/Home/ProcessUserSession',
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                data = GetNewData(data);
+                if (data.modal == 'error') {
+                    $('#loadingModal').modal('hide');
+                    $('#errorContentModal').html(data.html);
+                    $('#errorModal').modal('show');
+                }
+                else {
+                    data.alerts.forEach(function (element, index, array) {
+                        var id = CreateModal();
+                        $('#' + id + 'ContentModal').html(element);
+                        $('#' + id + 'Modal').modal('show');
+                    });
+                }
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let popup = document.getElementById("init-notif-popup");
+        let naoLembrar = localStorage.getItem("dont-remind-popup2");
+        let HasNotifications = false;
+
+        if (HasNotifications === true) {
+            if (!naoLembrar || new Date().getTime() > parseInt(naoLembrar)) {
+
+                $.ajax({
+                    type: "Post",
+                    url: '/SignFile/GetPendentSignsByPerson',
+                    contentType: "application/json;charset=utf-8",
+                    success: function (data) {
+                        data = GetNewData(data);
+                        if (data.modal == 'error') {
+                        }
+                        else {
+                            $('#tblNotificationBody').html(data.html);
+                            popup.style.display = "block";
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+function fecharPopup() {
+    document.getElementById("init-notif-popup").style.display = "none";
+}
+
+function remindMeLater() {
+    let agora = new Date().getTime();
+    let umDiaDepois = agora + (8 * 60 * 60 * 1000);
+    localStorage.setItem("dont-remind-popup2", umDiaDepois);
+
+    fecharPopup();
+}
+
+</script>

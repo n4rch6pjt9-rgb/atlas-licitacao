@@ -1,0 +1,276 @@
+{
+  "result": [
+    {
+      "codigoLicitacao": 497656,
+      "numeroLicitacao": null,
+      "identificacao": "456/2026",
+      "numero": "010/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA DE ENGENHARIA PARA ELABORAÇÃO DO PROJETO EXECUTIVO E EXECUÇÃO DE OBRA PARA A REVITALIZAÇÃO DO LARGO DO ROSÁRIO, SITUADO NO CENTRO, NO MUNICÍPIO DE MOGI DAS CRUZES",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 28,
+        "siglaTipoLicitacao": "CPMP",
+        "tipoLicitacao": "Concorrência por Menor Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Menor Preço"
+      },
+      "codigoSituacaoEdital": 5,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-09-17T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-07-23T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-09-17T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-07-22T14:03:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cpmp-010-2026-2026-497656",
+      "statusProcessoPublico": {
+        "codigo": 1,
+        "descricao": "Recebendo Propostas"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 492817,
+      "numeroLicitacao": null,
+      "identificacao": "448/2026",
+      "numero": "007/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA DE ENGENHARIA PARA ELABORAÇÃO DE PROJETO EXECUTIVO E EXECUÇÃO DE OBRA PARA A IMPLANTAÇÃO DE PARQUES NATURALIZADOS, SITUADOS NO JARDIM ESPERANÇA, CONJUNTO TOYAMA E PARQUE DA CIDADE, NO MUNICÍPIO DE MOGI DAS CRUZES",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 9,
+        "descricao": "Sessão Pública Iniciada"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 28,
+        "siglaTipoLicitacao": "CPMP",
+        "tipoLicitacao": "Concorrência por Menor Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Menor Preço"
+      },
+      "codigoSituacaoEdital": 1,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-09-02T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-07-06T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-09-02T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-07-03T11:11:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cpmp-007-2026-2026-492817",
+      "statusProcessoPublico": {
+        "codigo": 9,
+        "descricao": "Sessão Pública Iniciada"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 485742,
+      "numeroLicitacao": null,
+      "identificacao": "454/2026",
+      "numero": "8/2026",
+      "resumo": "CONTRATAÇÃO DE EMPRESA DE ENGENHARIA, PARA ELABORAÇÃO DE PROJETO ELÉTRICO E EXECUÇÃO DE OBRA PARA A IMPLANTAÇÃO DE PARQUE NATURALIZADO EM CÉSAR DE SOUZA (PRA 159), SITUADO NA RUA ORFEU DA CONCEIÇÃO, ESQUINA COM A AV. JACKES JONES, NO MUNICÍPIO DE MOGI...",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 12,
+        "descricao": "Encaminhado para adjudicação / homologação"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 28,
+        "siglaTipoLicitacao": "CPMP",
+        "tipoLicitacao": "Concorrência por Menor Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Menor Preço"
+      },
+      "codigoSituacaoEdital": 6,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-08-03T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-06-09T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-08-03T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-06-08T14:45:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cpmp-8-2026-2026-485742",
+      "statusProcessoPublico": {
+        "codigo": 12,
+        "descricao": "Encaminhado para adjudicação / homologação"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 483420,
+      "numeroLicitacao": null,
+      "identificacao": "2.446/2025 e apensos",
+      "numero": "104-3/2025",
+      "resumo": "AQUISIÇÃO DE EQUIPAMENTOS MÉDICO - HOSPITALARES (VENTILADOR PULMONAR, DESFIBRILADOR EXTERNO, CAMA FAWLER, ELETROCARDIÓGRAFO,  MONITOR MULTIPARÂMETROS, CADEIRA DE RODAS,  APARELHO ELETRONEUROMIÓGRAFO E AUDIÔMETRO).",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 9,
+        "descricao": "Sessão Pública Iniciada"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Pregão",
+        "codigoTipoLicitacao": 1,
+        "siglaTipoLicitacao": "PE",
+        "tipoLicitacao": "Pregão Eletrônico",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Menor Preço"
+      },
+      "codigoSituacaoEdital": 1,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-06-12T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-05-29T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-06-12T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-05-28T11:58:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/pe-104-3-2025-2026-483420",
+      "statusProcessoPublico": {
+        "codigo": 9,
+        "descricao": "Sessão Pública Iniciada"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    },
+    {
+      "codigoLicitacao": 471574,
+      "numeroLicitacao": null,
+      "identificacao": "3136/2025",
+      "numero": "18/2025",
+      "resumo": "CONTRATAÇÃO DE EMPRESA ESPECIALIZADA PARA REVISÃO E ATUALIZAÇÃO DO PLANO DE MANEJO DO PARQUE NATURAL MUNICIPAL FRANCISCO AFFONSO DE MELLO - \"CHIQUINHO VERÍSSIMO\".",
+      "razaoSocial": "Prefeitura Municipal de Mogi das Cruzes",
+      "nomeUnidade": "Prefeitura Municipal de Mogi das Cruzes",
+      "status": {
+        "codigo": 12,
+        "descricao": "Encaminhado para adjudicação / homologação"
+      },
+      "situacao": {
+        "codigo": 0,
+        "descricao": null
+      },
+      "tipoLicitacao": {
+        "codigoModalidadeLicitacao": 0,
+        "modalidadeLicitacao": "Concorrência",
+        "codigoTipoLicitacao": 22,
+        "siglaTipoLicitacao": "CPTP",
+        "tipoLicitacao": "Concorrência por Técnica e Preço",
+        "tipoRealizacao": "Eletrônico",
+        "tipoJulgamento": "Técnica e Preço"
+      },
+      "codigoSituacaoEdital": 6,
+      "codigoTratamentoDiferenciado": 1,
+      "codigoSituacaoCadastroLicitacao": 2,
+      "dataHoraInicioLances": "2026-06-09T12:01:00Z",
+      "dataHoraInicioPropostas": "2026-04-13T11:00:00Z",
+      "dataHoraFinalPropostas": "2026-06-09T12:00:00Z",
+      "dataHoraFinalLances": null,
+      "dataHoraPublicacao": "2026-04-10T18:16:00Z",
+      "isPublicado": false,
+      "unidadeCompradora": {
+        "codigoUnidadeCompradora": 2132,
+        "nomeUnidadeCompradora": "Prefeitura Municipal de Mogi das Cruzes",
+        "codigoComprador": 1352,
+        "nomeComprador": null,
+        "cidade": "Mogi das Cruzes",
+        "codigoMunicipioIbge": null,
+        "uf": "SP"
+      },
+      "comprador": null,
+      "urlReferencia": "/sp/prefeitura-municipal-de-mogi-das-cruzes-1352/cptp-18-2025-2026-471574",
+      "statusProcessoPublico": {
+        "codigo": 12,
+        "descricao": "Encaminhado para adjudicação / homologação"
+      },
+      "isExclusivoME": false,
+      "isBeneficoLocal": false,
+      "isStorageBuckS3": false
+    }
+  ],
+  "offset": 2,
+  "limit": 5,
+  "total": 491,
+  "pageCount": 99,
+  "currentPage": 2,
+  "nextPage": 3,
+  "previousPage": 1
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="ISO-8859-1" />
+  <title>Busca de COMPRA DIRETA - BLLCOMPRAS</title>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-link" href="/Process/ProcessSearchPublic?param1=0">Processos</a>
+    <a class="nav-link" href="/DirectBuy/DirectBuySearchPublic">Compra Direta</a>
+    <a class="nav-link" href="/Process/ProcessSearchPublicByLocation">Busca por Localizacao</a>
+  </nav>
+  <div id="captcha" class="g-recaptcha" data-sitekey="6LdpKvsmAAAAAA4rzH5iQNswgItyulQ1J2HQ1FkK" data-size="invisible" hidden></div>
+  <table class="table table-background" id="directBuyTable">
+    <tr>
+      <td>
+        <table class="table table-form">
+          <tr>
+            <th>PROMOTOR</th>
+            <th>Nº EDITAL</th>
+            <th>CIDADE</th>
+            <th>ESTADO</th>
+            <th>MODALIDADE</th>
+            <th>SITUAÇÃO</th>
+            <th>PUBLIC. INICIO</th>
+            <th>PUBLIC. FIM</th>
+          </tr>
+          <tr>
+            <td><input id="Organization" name="Organization" type="text" value="" /></td>
+            <td><input id="Number" name="Number" type="text" value="" /></td>
+            <td><input id="City" name="City" type="text" value="" /></td>
+            <td>
+              <select id="fkState" name="fkState"><option value="23">SC</option></select>
+            </td>
+            <td>
+              <select id="fkModality" name="fkModality">
+                <option value=""></option>
+                <option value="1">DISPENSA</option>
+                <option value="2">INEXIGIBILIDADE</option>
+              </select>
+            </td>
+            <td>
+              <select id="fkStatus" name="fkStatus">
+                <option value=""></option>
+                <option value="2">PUBLICADA</option>
+                <option value="3">CONCLUIDA</option>
+              </select>
+            </td>
+            <td><input id="DateStart" name="DateStart" type="text" value="15/06/2026" /></td>
+            <td><input id="DateEnd" name="DateEnd" type="text" value="15/09/2026" /></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table class="table" id="tableProcessData">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Promotor</th>
+              <th>Nº</th>
+              <th>Status</th>
+              <th>Modalidade</th>
+              <th>Data Publicação</th>
+              <th>Data Conclusão</th>
+            </tr>
+          </thead>
+          <tbody id="tableProcessDataBody">
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dvz_UJiHhkZni1gVMvoMn" target="_blank">info</a></td>
+              <td>FUNDACAO DE APOIO INST AO DESENV CIENT E TECNOLOGICO</td>
+              <td>05671/2026</td>
+              <td>CONCLUÍDA</td>
+              <td>INEXIGIBILIDADE</td>
+              <td>15/09/2026 08:16:57</td>
+              <td>15/09/2026 08:17:00</td>
+            </tr>
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dtwvx9SBaiTudHV0ij95S2Kpbag" target="_blank">info</a></td>
+              <td>FIOTEC - FUNDACAO PARA O DESENVOLVIMENTO CIENTIFICO E TECNOLOGICO EM SAUDE</td>
+              <td>10143056</td>
+              <td>CONCLUÍDA</td>
+              <td>INEXIGIBILIDADE</td>
+              <td>14/09/2026 19:11:13</td>
+              <td>14/09/2026 19:12:04</td>
+            </tr>
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Di1hJFiiCdAR15Okp98GYDhnFiJXW" target="_blank">info</a></td>
+              <td>CAMARA MUNICIPAL DE MIRASELVA</td>
+              <td>01/2026</td>
+              <td>PUBLICADA</td>
+              <td>INEXIGIBILIDADE</td>
+              <td>14/09/2026 16:58:34</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5Dhj7xMeOPJms297v_LIntR8oEgPZ" target="_blank">info</a></td>
+              <td>FUNDACAO UNIVERSITARIA DE DESENV DE EXTENSAO E PESQUISA</td>
+              <td>95920/2026</td>
+              <td>PUBLICADA</td>
+              <td>DISPENSA</td>
+              <td>14/09/2026 16:54:37</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DoZo2kfSWTnBjchQb7X4688EEtIXB" target="_blank">info</a></td>
+              <td>MUNICIPIO DE PETROPOLIS</td>
+              <td>18197/2026</td>
+              <td>PUBLICADA</td>
+              <td>DISPENSA</td>
+              <td>14/09/2026 15:07:14</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DbyxU2XHkNIEFRDp_QXphs2IY0O6X" target="_blank">info</a></td>
+              <td>FUNDO DE URBANIZACAO DE LONDRINA</td>
+              <td>002/2026</td>
+              <td>CONCLUÍDA</td>
+              <td>DISPENSA</td>
+              <td>14/09/2026 13:42:34</td>
+              <td>14/09/2026 13:52:16</td>
+            </tr>
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DQh53Wm2AnzYMNkzS5HlQfAEClDwi" target="_blank">info</a></td>
+              <td>MUNICIPIO DE MAJOR VIEIRA</td>
+              <td>042/2026</td>
+              <td>PUBLICADA</td>
+              <td>DISPENSA</td>
+              <td>10/09/2026 13:15:09</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><a href="/DirectBuy/DirectBuyView?param1=%5Bgkz%5DgP2FcH8Z10sKLhokjXs8UcGUlM7C" target="_blank">info</a></td>
+              <td>PREFEITURA MUNICIPAL DE OLINDINA</td>
+              <td>018/2026</td>
+              <td>PUBLICADA</td>
+              <td>DISPENSA</td>
+              <td>08/09/2026 10:09:56</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <script>
+    function ExecSearch(offset, callback) {
+      ExecuteCaptcha('publicSearch').then(function (token) {
+        var url = '/DirectBuy/GetDirectBuyByParams?Organization=&token=' + token + '&Offset=' + offset;
+        execAjax(url, callback);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "quantidadeTotal": 3,
+  "paginaAtual": 1,
+  "dadosLicitacoes": [
+    {
+      "id": null,
+      "codLicitacao": 910001,
+      "identificacao": "162/2025",
+      "numero": "162/2025",
+      "resumo": "Aquisição de medicamentos — Mogi das Cruzes/SP",
+      "razaoSocial": "PREFEITURA MUNICIPAL DE MOGI DAS CRUZES",
+      "status": "Aberto",
+      "tipoLicitacao": "Pregão Eletrônico",
+      "urlReferencia": "https://www.portaldecompraspublicas.com.br/processos/SP/Mogi-das-Cruzes/PRG-2025-SP-162",
+      "cdSituacao": 1
+    },
+    {
+      "id": null,
+      "codLicitacao": 910002,
+      "identificacao": "072/2025",
+      "numero": "072/2025",
+      "resumo": "Registro de preços de EPI — Porto Belo/SC",
+      "razaoSocial": "PREFEITURA MUNICIPAL DE PORTO BELO",
+      "status": "Aberto",
+      "tipoLicitacao": "Pregão Eletrônico",
+      "urlReferencia": "https://www.portaldecompraspublicas.com.br/processos/SC/Porto-Belo/PRG-2025-SC-072",
+      "cdSituacao": 1
+    },
+    {
+      "id": null,
+      "codLicitacao": 910003,
+      "identificacao": "002/2025",
+      "numero": "002/2025",
+      "resumo": "Material pedagógico — Porto Nacional/TO",
+      "razaoSocial": "MUNICIPIO DE PORTO NACIONAL",
+      "status": "Aberto",
+      "tipoLicitacao": "Pregão Eletrônico",
+      "urlReferencia": "https://www.portaldecompraspublicas.com.br/processos/TO/Porto-Nacional/PRG-2025-TO-002",
+      "cdSituacao": 1
+    }
+  ]
+}
