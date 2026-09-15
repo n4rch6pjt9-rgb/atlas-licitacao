@@ -76,6 +76,7 @@ import {
 import {
   PNCP_EDITAL_EXAMPLE,
   PNCP_OFFICIAL_NAME,
+  isPncpEditalUrl,
 } from "@/lib/registry/pncp-url";
 
 export const Route = createFileRoute("/fontes/$id")({
@@ -525,7 +526,7 @@ function VisaoTab({ source }: { source: SourceDetail }) {
               target="_blank"
               rel="noreferrer"
             >
-              https://pncp.gov.br/app/editais/{"{cnpj}-{unidade}-{numero}/{ano}"}
+              https://pncp.gov.br/app/editais/{"{cnpj}/{ano}/{sequencialCompra}"}
             </a>
             <span className="mt-1 block font-mono text-xs text-muted">
               Ex.: {PNCP_EDITAL_EXAMPLE}
@@ -803,11 +804,14 @@ function RegistrosTab({
               /^https?:\/\//i.test(row.source_url) ? (
                 <a
                   href={row.source_url}
-                  className="mt-1 block truncate font-mono text-xs text-muted underline-offset-4 hover:text-fg hover:underline"
+                  className="mt-1 block truncate text-xs text-muted underline-offset-4 hover:text-fg hover:underline"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {row.source_url}
+                  {row.source_system_id === "src_br_pncp" &&
+                  isPncpEditalUrl(row.source_url)
+                    ? "Ver no PNCP ↗"
+                    : row.source_url}
                 </a>
               ) : (
                 <p className="mt-1 truncate font-mono text-xs text-muted">{row.source_url}</p>

@@ -6,7 +6,7 @@ import type {
   SourcePlanningRecord,
   SourceProcurement,
 } from "../types.ts";
-import { pncpEditalUrl } from "../pncp-url.ts";
+import { pncpEditalUrl, toPublicPncpUrl } from "../pncp-url.ts";
 
 export type PublicProcurementSource = {
   readonly connectorType: ConnectorType;
@@ -164,6 +164,15 @@ export function applyNormalization(
     asYear(process_number);
 
   const publicUrl =
+    (raw && typeof raw === "object"
+      ? pncpEditalUrl(raw as {
+          cnpj?: unknown;
+          anoCompra?: unknown;
+          sequencialCompra?: unknown;
+          orgaoEntidade?: { cnpj?: unknown } | null;
+        })
+      : null) ??
+    toPublicPncpUrl(mappedUrl) ??
     pncpEditalUrl(control) ??
     pncpEditalUrl(external_id) ??
     pncpEditalUrl(mappedUrl);
