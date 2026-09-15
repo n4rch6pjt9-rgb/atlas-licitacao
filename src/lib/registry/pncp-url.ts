@@ -1,17 +1,16 @@
 /**
  * Public PNCP edital URL — Portal Nacional de Contratações Públicas.
- * Pattern: https://pncp.gov.br/app/editais/{cnpj}-{unidade}-{numero}/{ano}
- * Example: https://pncp.gov.br/app/editais/75442756000190-1-001001/2026
+ * Pattern: https://pncp.gov.br/app/editais/{cnpj}/{ano}/{sequencialCompra}
+ * Example: https://pncp.gov.br/app/editais/10572048000128/2026/1272
  *
- * numeroControlePNCP is `{cnpj}-{unidade}-{numero}/{ano}`. The slash is a
- * path separator on the public portal — never encode it, never prefix `pncp-`.
- * API paths (`/pncp-api/v1/orgaos/.../compras/...`) rewrite to this pattern.
+ * numeroControlePNCP remains `{cnpj}-{unidade}-{numero}/{ano}` as an official
+ * identifier, but it is not the public page path.
  */
 
 export const PNCP_PORTAL_ORIGIN = "https://pncp.gov.br";
 export const PNCP_EDITAL_BASE = `${PNCP_PORTAL_ORIGIN}/app/editais`;
 export const PNCP_EDITAL_EXAMPLE =
-  "https://pncp.gov.br/app/editais/75442756000190-1-001001/2026";
+  "https://pncp.gov.br/app/editais/10572048000128/2026/1272";
 export const PNCP_OFFICIAL_NAME = "Portal Nacional de Contratações Públicas";
 
 export type PncpControl = {
@@ -21,10 +20,18 @@ export type PncpControl = {
   ano: string;
 };
 
+type PncpStructuredPayload = {
+  cnpj?: unknown;
+  anoCompra?: unknown;
+  sequencialCompra?: unknown;
+  orgaoEntidade?: { cnpj?: unknown } | null;
+};
+
 const CONTROL_SLASH = /^(\d{14})-(\d+)-(\d+)\/(\d{4})$/;
 const CONTROL_ALT = /^(\d{14})-(\d+)-(\d{4})-(\d+)$/;
 const API_COMPRA =
   /\/orgaos\/(\d{14})\/compras\/(\d{4})\/(\d+)(?:\/|$)/i;
+const PUBLIC_EDITAL = /^https?:\/\/pncp\.gov\.br\/app\/editais\/(\d{14})\/(\d{4})\/(\d+)$/i;
 
 function digits(value: string): string {
   return value.replace(/\D/g, "");
@@ -103,18 +110,52 @@ export function pncpControl(parts: {
   return `${cnpj}-${unidade}-${numero}/${ano}`;
 }
 
+function structuredPncpUrl(input: PncpStructuredPayload): string | null {
+  const cnpj = digits(
+    String(input.cnpj ?? input.orgaoEntidade?.cnpj ?? ""),
+  );
+  const ano = String(input.anoCompra ?? "").replace(/\D/g, "");
+  const sequencial = digits(String(input.sequencialCompra ?? ""));
+  if (
+    !isUsablePncpCnpj(cnpj) ||
+    !/^\d{4}$/.test(ano) ||
+    !sequencial
+  ) {
+    return null;
+  }
+  return `${PNCP_EDITAL_BASE}/${cnpj}/${ano}/${sequencial}`;
+}
+
 export function pncpEditalUrl(
-  input: string | PncpControl | null | undefined,
+  input: string | PncpControl | PncpStructuredPayload | null | undefined,
 ): string | null {
+  if (
+    input &&
+    typeof input === "object" &&
+    ("sequencialCompra" in input || "anoCompra" in input)
+  ) {
+    return structuredPncpUrl(input);
+  }
+  if (typeof input === "string" && PUBLIC_EDITAL.test(input.trim())) {
+    return input.trim();
+  }
+  if (
+    input &&
+    typeof input === "object" &&
+    !("cnpj" in input && "numero" in input && "ano" in input)
+  ) {
+    return null;
+  }
+  const control = input as string | PncpControl | null | undefined;
   const parsed =
-    input && typeof input === "object"
+    control && typeof control === "object"
       ? {
-          cnpj: digits(input.cnpj),
-          unidade: String(input.unidade || "1"),
-          numero: padNumero(String(input.numero)),
-          ano: String(input.ano),
+          cnpj: digits(control.cnpj),
+          unidade: String(control.unidade || "1"),
+          numero: padNumero(String(control.numero)),
+          ano: String(control.ano),
         }
-      : parseNumeroControlePncp(input);
+      : parseNumeroControlePncp(control);
   if (
     !parsed ||
     !isUsablePncpCnpj(parsed.cnpj) ||
@@ -123,27 +164,29 @@ export function pncpEditalUrl(
   ) {
     return null;
   }
-  return `${PNCP_EDITAL_BASE}/${parsed.cnpj}-${parsed.unidade}-${parsed.numero}/${parsed.ano}`;
+  return `${PNCP_EDITAL_BASE}/${parsed.cnpj}/${parsed.ano}/${Number(parsed.numero)}`;
 }
 
 export function isPncpEditalUrl(value: string | null | undefined): boolean {
   if (!value) return false;
-  const trimmed = value.trim();
-  if (
-    !/^https?:\/\/pncp\.gov\.br\/app\/editais\/\d{14}-\d+-\d+\/\d{4}$/i.test(
-      trimmed,
-    )
-  ) {
-    return false;
-  }
-  return pncpEditalUrl(trimmed) != null;
+  return PUBLIC_EDITAL.test(value.trim());
 }
 
-/** Clickable public URL: rewrite `/pncp-api` editais; never keep API file links. */
+/** Clickable public URL: rewrite API paths and legacy control URLs. */
 export function toPublicPncpUrl(url: string | null | undefined): string | null {
   if (!url) return null;
-  const rewritten = pncpEditalUrl(url);
-  if (rewritten) return rewritten;
-  if (/pncp\.gov\.br\/pncp-api/i.test(url)) return null;
+  const api = url.match(API_COMPRA);
+  if (api) {
+    return pncpEditalUrl({
+      cnpj: api[1],
+      ano: api[2],
+      numero: api[3],
+      unidade: "1",
+    });
+  }
+  if (isPncpEditalUrl(url)) return url.trim();
+  const legacy = parseNumeroControlePncp(url);
+  if (legacy) return pncpEditalUrl(legacy);
+  if (/pncp\.gov\.br\/(?:pncp-api|api\/consulta)/i.test(url)) return null;
   return url;
 }

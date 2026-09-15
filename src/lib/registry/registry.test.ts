@@ -2302,7 +2302,7 @@ describe("BLL discovery channels", () => {
 });
 
 describe("PNCP public edital URL", () => {
-  it("builds the official /app/editais/{cnpj}-{unidade}-{numero}/{ano} pattern", async () => {
+  it("builds the official /app/editais/{cnpj}/{ano}/{sequencialCompra} pattern", async () => {
     const {
       pncpEditalUrl,
       pncpControl,
@@ -2312,13 +2312,24 @@ describe("PNCP public edital URL", () => {
       PNCP_OFFICIAL_NAME,
       PNCP_EDITAL_EXAMPLE,
     } = await import("./pncp-url.ts");
-    const example = "https://pncp.gov.br/app/editais/75442756000190-1-001001/2026";
+    const example = "https://pncp.gov.br/app/editais/10572048000128/2026/1272";
     assert.equal(PNCP_EDITAL_EXAMPLE, example);
     assert.equal(PNCP_OFFICIAL_NAME, "Portal Nacional de Contratações Públicas");
-    assert.equal(pncpEditalUrl("75442756000190-1-001001/2026"), example);
+    assert.equal(
+      pncpEditalUrl("10572048000128-1-001272/2026"),
+      example,
+    );
     assert.equal(pncpEditalUrl(example), example);
     assert.equal(
-      pncpEditalUrl(pncpControl({ cnpj: "75442756000190", unidade: 1, numero: 1001, ano: 2026 })),
+      pncpEditalUrl(pncpControl({ cnpj: "10572048000128", unidade: 1, numero: 1272, ano: 2026 })),
+      example,
+    );
+    assert.equal(
+      pncpEditalUrl({
+        cnpj: "10572048000128",
+        anoCompra: 2026,
+        sequencialCompra: 1272,
+      }),
       example,
     );
     assert.equal(isPncpEditalUrl(example), true);
@@ -2329,13 +2340,13 @@ describe("PNCP public edital URL", () => {
       pncpEditalUrl(
         "https://pncp.gov.br/pncp-api/v1/orgaos/75442756000190/compras/2026/17/arquivos/2",
       ),
-      "https://pncp.gov.br/app/editais/75442756000190-1-000017/2026",
+      "https://pncp.gov.br/app/editais/75442756000190/2026/17",
     );
     assert.equal(
       toPublicPncpUrl(
         "https://pncp.gov.br/pncp-api/v1/orgaos/75442756000190/compras/2026/17/arquivos/2",
       ),
-      "https://pncp.gov.br/app/editais/75442756000190-1-000017/2026",
+      "https://pncp.gov.br/app/editais/75442756000190/2026/17",
     );
     assert.equal(
       toPublicPncpUrl("https://pncp.gov.br/pncp-api/v1/orgaos/00000000000000/compras/2026/1"),
@@ -2359,6 +2370,9 @@ describe("PNCP public edital URL", () => {
     const row = applyNormalization(
       {
         numeroControlePNCP: "75442756000190-1-001001/2026",
+        cnpj: "75442756000190",
+        anoCompra: 2026,
+        sequencialCompra: 1001,
         objetoCompra: "Aquisição de material",
       },
       undefined,
@@ -2367,7 +2381,7 @@ describe("PNCP public edital URL", () => {
     );
     assert.equal(
       row.source_url,
-      "https://pncp.gov.br/app/editais/75442756000190-1-001001/2026",
+      "https://pncp.gov.br/app/editais/75442756000190/2026/1001",
     );
     assert.equal(row.external_id, "75442756000190-1-001001/2026");
     const local = applyNormalization(
