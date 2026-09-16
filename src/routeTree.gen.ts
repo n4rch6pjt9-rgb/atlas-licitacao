@@ -16,10 +16,10 @@ import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as CensoRouteImport } from './routes/censo'
 import { Route as CoberturaRouteImport } from './routes/cobertura'
 import { Route as FamiliasRouteImport } from './routes/familias'
-import { Route as FontesRouteImport } from './routes/fontes'
+import { Route as FontesRouteRouteImport } from './routes/fontes/route'
 import { Route as ItensRouteImport } from './routes/itens'
 import { Route as MatrizRouteImport } from './routes/matriz'
-import { Route as OportunidadesRouteImport } from './routes/oportunidades'
+import { Route as OportunidadesRouteRouteImport } from './routes/oportunidades/route'
 import { Route as OrgaosRouteImport } from './routes/orgaos'
 import { Route as PlanejamentoRouteImport } from './routes/planejamento'
 import { Route as PrioridadesRouteImport } from './routes/prioridades'
@@ -70,7 +70,7 @@ const FamiliasRoute = FamiliasRouteImport.update({
   path: '/familias',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FontesRoute = FontesRouteImport.update({
+const FontesRouteRoute = FontesRouteRouteImport.update({
   id: '/fontes',
   path: '/fontes',
   getParentRoute: () => rootRouteImport,
@@ -85,7 +85,7 @@ const MatrizRoute = MatrizRouteImport.update({
   path: '/matriz',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OportunidadesRoute = OportunidadesRouteImport.update({
+const OportunidadesRouteRoute = OportunidadesRouteRouteImport.update({
   id: '/oportunidades',
   path: '/oportunidades',
   getParentRoute: () => rootRouteImport,
@@ -123,12 +123,12 @@ const FamiliasFamilyRoute = FamiliasFamilyRouteImport.update({
 const FontesIndexRoute = FontesIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => FontesRoute,
+  getParentRoute: () => FontesRouteRoute,
 } as any)
 const FontesIdRoute = FontesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
-  getParentRoute: () => FontesRoute,
+  getParentRoute: () => FontesRouteRoute,
 } as any)
 const ItensIndexRoute = ItensIndexRouteImport.update({
   id: '/',
@@ -143,12 +143,12 @@ const ItensIdRoute = ItensIdRouteImport.update({
 const OportunidadesIndexRoute = OportunidadesIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => OportunidadesRoute,
+  getParentRoute: () => OportunidadesRouteRoute,
 } as any)
 const OportunidadesIdRoute = OportunidadesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
-  getParentRoute: () => OportunidadesRoute,
+  getParentRoute: () => OportunidadesRouteRoute,
 } as any)
 const OrgaosIndexRoute = OrgaosIndexRouteImport.update({
   id: '/',
@@ -163,16 +163,16 @@ const OrgaosIdRoute = OrgaosIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/fontes': typeof FontesRouteRouteWithChildren
+  '/oportunidades': typeof OportunidadesRouteRouteWithChildren
   '/adapters': typeof AdaptersRoute
   '/alertas': typeof AlertasRoute
   '/busca': typeof BuscaRoute
   '/censo': typeof CensoRoute
   '/cobertura': typeof CoberturaRoute
   '/familias': typeof FamiliasRouteWithChildren
-  '/fontes': typeof FontesRouteWithChildren
   '/itens': typeof ItensRouteWithChildren
   '/matriz': typeof MatrizRoute
-  '/oportunidades': typeof OportunidadesRouteWithChildren
   '/orgaos': typeof OrgaosRouteWithChildren
   '/planejamento': typeof PlanejamentoRoute
   '/prioridades': typeof PrioridadesRoute
@@ -213,16 +213,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/fontes': typeof FontesRouteRouteWithChildren
+  '/oportunidades': typeof OportunidadesRouteRouteWithChildren
   '/adapters': typeof AdaptersRoute
   '/alertas': typeof AlertasRoute
   '/busca': typeof BuscaRoute
   '/censo': typeof CensoRoute
   '/cobertura': typeof CoberturaRoute
   '/familias': typeof FamiliasRouteWithChildren
-  '/fontes': typeof FontesRouteWithChildren
   '/itens': typeof ItensRouteWithChildren
   '/matriz': typeof MatrizRoute
-  '/oportunidades': typeof OportunidadesRouteWithChildren
   '/orgaos': typeof OrgaosRouteWithChildren
   '/planejamento': typeof PlanejamentoRoute
   '/prioridades': typeof PrioridadesRoute
@@ -242,16 +242,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/fontes'
+    | '/oportunidades'
     | '/adapters'
     | '/alertas'
     | '/busca'
     | '/censo'
     | '/cobertura'
     | '/familias'
-    | '/fontes'
     | '/itens'
     | '/matriz'
-    | '/oportunidades'
     | '/orgaos'
     | '/planejamento'
     | '/prioridades'
@@ -291,16 +291,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/fontes'
+    | '/oportunidades'
     | '/adapters'
     | '/alertas'
     | '/busca'
     | '/censo'
     | '/cobertura'
     | '/familias'
-    | '/fontes'
     | '/itens'
     | '/matriz'
-    | '/oportunidades'
     | '/orgaos'
     | '/planejamento'
     | '/prioridades'
@@ -319,16 +319,16 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FontesRouteRoute: typeof FontesRouteRouteWithChildren
+  OportunidadesRouteRoute: typeof OportunidadesRouteRouteWithChildren
   AdaptersRoute: typeof AdaptersRoute
   AlertasRoute: typeof AlertasRoute
   BuscaRoute: typeof BuscaRoute
   CensoRoute: typeof CensoRoute
   CoberturaRoute: typeof CoberturaRoute
   FamiliasRoute: typeof FamiliasRouteWithChildren
-  FontesRoute: typeof FontesRouteWithChildren
   ItensRoute: typeof ItensRouteWithChildren
   MatrizRoute: typeof MatrizRoute
-  OportunidadesRoute: typeof OportunidadesRouteWithChildren
   OrgaosRoute: typeof OrgaosRouteWithChildren
   PlanejamentoRoute: typeof PlanejamentoRoute
   PrioridadesRoute: typeof PrioridadesRoute
@@ -390,7 +390,7 @@ declare module '@tanstack/react-router' {
       id: '/fontes'
       path: '/fontes'
       fullPath: '/fontes'
-      preLoaderRoute: typeof FontesRouteImport
+      preLoaderRoute: typeof FontesRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/itens': {
@@ -411,7 +411,7 @@ declare module '@tanstack/react-router' {
       id: '/oportunidades'
       path: '/oportunidades'
       fullPath: '/oportunidades'
-      preLoaderRoute: typeof OportunidadesRouteImport
+      preLoaderRoute: typeof OportunidadesRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orgaos': {
@@ -461,14 +461,14 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/fontes/'
       preLoaderRoute: typeof FontesIndexRouteImport
-      parentRoute: typeof FontesRoute
+      parentRoute: typeof FontesRouteRoute
     }
     '/fontes/$id': {
       id: '/fontes/$id'
       path: '/$id'
       fullPath: '/fontes/$id'
       preLoaderRoute: typeof FontesIdRouteImport
-      parentRoute: typeof FontesRoute
+      parentRoute: typeof FontesRouteRoute
     }
     '/itens/': {
       id: '/itens/'
@@ -489,14 +489,14 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/oportunidades/'
       preLoaderRoute: typeof OportunidadesIndexRouteImport
-      parentRoute: typeof OportunidadesRoute
+      parentRoute: typeof OportunidadesRouteRoute
     }
     '/oportunidades/$id': {
       id: '/oportunidades/$id'
       path: '/$id'
       fullPath: '/oportunidades/$id'
       preLoaderRoute: typeof OportunidadesIdRouteImport
-      parentRoute: typeof OportunidadesRoute
+      parentRoute: typeof OportunidadesRouteRoute
     }
     '/orgaos/': {
       id: '/orgaos/'
@@ -515,6 +515,33 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface FontesRouteRouteChildren {
+  FontesIdRoute: typeof FontesIdRoute
+  FontesIndexRoute: typeof FontesIndexRoute
+}
+
+const FontesRouteRouteChildren: FontesRouteRouteChildren = {
+  FontesIdRoute: FontesIdRoute,
+  FontesIndexRoute: FontesIndexRoute,
+}
+
+const FontesRouteRouteWithChildren = FontesRouteRoute._addFileChildren(
+  FontesRouteRouteChildren,
+)
+
+interface OportunidadesRouteRouteChildren {
+  OportunidadesIdRoute: typeof OportunidadesIdRoute
+  OportunidadesIndexRoute: typeof OportunidadesIndexRoute
+}
+
+const OportunidadesRouteRouteChildren: OportunidadesRouteRouteChildren = {
+  OportunidadesIdRoute: OportunidadesIdRoute,
+  OportunidadesIndexRoute: OportunidadesIndexRoute,
+}
+
+const OportunidadesRouteRouteWithChildren =
+  OportunidadesRouteRoute._addFileChildren(OportunidadesRouteRouteChildren)
+
 interface FamiliasRouteChildren {
   FamiliasFamilyRoute: typeof FamiliasFamilyRoute
   FamiliasIndexRoute: typeof FamiliasIndexRoute
@@ -529,19 +556,6 @@ const FamiliasRouteWithChildren = FamiliasRoute._addFileChildren(
   FamiliasRouteChildren,
 )
 
-interface FontesRouteChildren {
-  FontesIdRoute: typeof FontesIdRoute
-  FontesIndexRoute: typeof FontesIndexRoute
-}
-
-const FontesRouteChildren: FontesRouteChildren = {
-  FontesIdRoute: FontesIdRoute,
-  FontesIndexRoute: FontesIndexRoute,
-}
-
-const FontesRouteWithChildren =
-  FontesRoute._addFileChildren(FontesRouteChildren)
-
 interface ItensRouteChildren {
   ItensIdRoute: typeof ItensIdRoute
   ItensIndexRoute: typeof ItensIndexRoute
@@ -553,20 +567,6 @@ const ItensRouteChildren: ItensRouteChildren = {
 }
 
 const ItensRouteWithChildren = ItensRoute._addFileChildren(ItensRouteChildren)
-
-interface OportunidadesRouteChildren {
-  OportunidadesIdRoute: typeof OportunidadesIdRoute
-  OportunidadesIndexRoute: typeof OportunidadesIndexRoute
-}
-
-const OportunidadesRouteChildren: OportunidadesRouteChildren = {
-  OportunidadesIdRoute: OportunidadesIdRoute,
-  OportunidadesIndexRoute: OportunidadesIndexRoute,
-}
-
-const OportunidadesRouteWithChildren = OportunidadesRoute._addFileChildren(
-  OportunidadesRouteChildren,
-)
 
 interface OrgaosRouteChildren {
   OrgaosIdRoute: typeof OrgaosIdRoute
@@ -583,16 +583,16 @@ const OrgaosRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FontesRouteRoute: FontesRouteRouteWithChildren,
+  OportunidadesRouteRoute: OportunidadesRouteRouteWithChildren,
   AdaptersRoute: AdaptersRoute,
   AlertasRoute: AlertasRoute,
   BuscaRoute: BuscaRoute,
   CensoRoute: CensoRoute,
   CoberturaRoute: CoberturaRoute,
   FamiliasRoute: FamiliasRouteWithChildren,
-  FontesRoute: FontesRouteWithChildren,
   ItensRoute: ItensRouteWithChildren,
   MatrizRoute: MatrizRoute,
-  OportunidadesRoute: OportunidadesRouteWithChildren,
   OrgaosRoute: OrgaosRouteWithChildren,
   PlanejamentoRoute: PlanejamentoRoute,
   PrioridadesRoute: PrioridadesRoute,
